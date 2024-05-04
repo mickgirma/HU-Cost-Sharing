@@ -15,7 +15,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 confirm_logged_in();
 
 ?>
+<?php
+if (isset($_GET['suspend'])) {
+  echo $id = $_GET['id'];
+  mysqli_query($conn, "UPDATE `user` SET `status`= 'suspend' WHERE  `id`= '$id'");
+  $_SESSION['delmsg'] = "User Suspend !!";
+  header("location:manage_account.php");
+}
+if (isset($_GET['status'])) {
+  echo $id = $_GET['id'];
+  mysqli_query($conn, "UPDATE `user` SET `status`= 'active' WHERE  `id`= '$id'");
+  $_SESSION['delmsg'] = "User Active !!";
+  header("location:manage_account.php");
+}
 
+?>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -71,28 +85,50 @@ confirm_logged_in();
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+                                        <?php
+                    $sql = mysqli_query($conn, "SELECT * FROM `user` WHERE  `role`!='Student'");
+                    while ($row = mysqli_fetch_assoc($sql)) {
+                      $id = $row['id'];
+                      $fullName = $row['fullName'];
+                      $userName = $row['userName'];
+                      $phoneNumber = $row['phoneNumber'];
+                      $userPhoto = $row['userPhoto'];
+                      $role = $row['role'];
+                      $status = $row['status'];
+                      $btnColor = "";
+
+                      if ($status == 'active') {
+                        $btnColor = 'btn btn-primary btn-xs btn-disable';
+                      } else {
+                        $btnColor = 'btn btn-danger btn-xs btn-disable';
+                      }
+
+                    ?>
+
                                         <tr>
 
-                                            <td>ID</td>
-                                            <td>User 1</td>
+                                            <td><?php echo htmlentities($id) ?></td>
+                                            <td><?php echo htmlentities($userName) ?></td>
 
                                             <td>
-                                                Abebe
+                                                <img src="../images/<?php echo htmlentities($userPhoto); ?>"
+                                                    alt="ALT img" class="img-circle img-size-32 mr-2">
+                                                <?php echo htmlentities($fullName) ?>
                                             </td>
-                                            <td> Student</td>
-                                            <td> 0909</td>
+                                            <td> <?php echo htmlentities($role) ?></td>
+                                            <td> <?php echo htmlentities($phoneNumber) ?></td>
                                             <td>
-                                                Active
+                                                <button class="<?php echo htmlentities($btnColor) ?>">
+                                                    <?php echo htmlentities($status) ?></button>
                                             </td>
                                             <td>
-                                                <a href=""><i
+                                                <a href="edit_user.php?id=<?php echo $row['id'] ?>"><i
                                                         class="fas fa-pencil-alt mr-2"></i></a>
-                                                <a href=""
+                                                <a href="manage_account.php?id=<?php echo $id ?>&suspend=delete"
                                                     onClick=
                                                     "return confirm('Are you sure you want to suspend?')"><i
                                                         class="far fa-trash-alt"></i></a>
-                                                <a href=""
+                                                <a href="manage_account.php?id=<?php echo $id ?>&status=active"
                                                     onClick="return confirm('Are you sure you want to Active this user?')"><i
                                                         class="far fa-check-circle"></i></a>
                                             </td>
@@ -101,9 +137,23 @@ confirm_logged_in();
                                             </td> -->
                                         </tr>
 
-                                       
+                                        <?php   }
+
+                    ?>
                                     </tbody>
-                                    
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Username</th>
+                                            <th>Name</th>
+
+                                            <th>Role</th>
+                                            <th>Phone Number</th>
+                                            <th>status</th>
+                                            <th>Action</th>
+                                            <!-- <th>status</th> -->
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
 
