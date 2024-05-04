@@ -11,6 +11,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <?php
 //login confirmation
 confirm_logged_in();
+
+
+?>
+<?php
+
+if (isset($_GET['status'])) {
+  echo $id = $_GET['id'];
+  mysqli_query($conn, "UPDATE `costshareform` SET `status`= 'active' WHERE  `id`= '$id'");
+  $_SESSION['delmsg'] = "User Suspend !!";
+  header("location:manage_costshare.php");
+}
+if (isset($_GET['status']) && $_GET['status'] == 'disable') {
+  echo $id = $_GET['id'];
+  mysqli_query($conn, "UPDATE `costshareform` SET `status`= 'disable' WHERE  `id`= '$id'");
+  $_SESSION['delmsg'] = "User Suspend !!";
+  header("location:manage_costshare.php");
+}
 ?>
 
 <body class="hold-transition sidebar-mini">
@@ -70,8 +87,77 @@ confirm_logged_in();
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                  $num = 0;
+                  $sql = mysqli_query($conn, "SELECT costshareform.id, `collegeName`,subcategory.subcategoryName as categoryName ,`tuitionFee`, `foodExpenseFee`, `beddingExpenseFee`, `userId`, `total`, `status`,`action`,`year` FROM `costshareform` INNER JOIN subcategory on collegeName = subcategory.id WHERE 1");
+                  while ($row = mysqli_fetch_assoc($sql)) {
+                    $id = $row['id'];
+                    $collegeName = $row['categoryName'];
+                    $tuitionFee = $row['tuitionFee'];
+                    $foodExpenseFee = $row['foodExpenseFee'];
+                    $beddingExpenseFee = $row['beddingExpenseFee'];
+                    $status = $row['status'];
+                    $action = $row['action'];
+                    $year = $row['year'];
+
+                    $total = $tuitionFee + $foodExpenseFee + $beddingExpenseFee;
+                    $num++;
+                    if ($status == 'active') {
+                      $btnColor = 'btn btn-primary btn-xs btn-disable';
+                    } else {
+                      $btnColor = 'btn btn-danger btn-xs btn-disable';
+                    }
+                  ?>
+
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($num); ?></td>
+                                        <td><?php echo htmlspecialchars($collegeName); ?></td>
+                                        <td><?php echo htmlspecialchars($tuitionFee); ?></td>
+                                        <td><?php echo htmlspecialchars($foodExpenseFee); ?></td>
+                                        <td><?php echo htmlspecialchars($beddingExpenseFee); ?></td>
+                                        <td><?php echo htmlspecialchars($total); ?></td>
+                                        <td><?php echo htmlspecialchars($year); ?></td>
+                                        <td><?php echo htmlspecialchars($action); ?></td>
+                                        <td><button class="<?php echo htmlentities($btnColor) ?>">
+                                                <?php echo htmlentities($status) ?></button></td>
+
+                                        <td> <a href="manage_costshare.php?id=<?php echo $id ?>&status=active"
+                                                onClick="return confirm('Are you sure you want to Active this Cost Share?')"><i
+                                                    class="far fa-check-circle"></i></a>
+                                            <a href="manage_costshare.php?id=<?php echo $id ?>&status=disable"
+                                                onClick="return confirm('Are you sure you want to disable this Cost Share?')"><i
+                                                    class="fa fa-trash"></i></a>
+                                        </td>
+
+
+                                    </tr>
+                                    <?php
+                  }
+
+                  ?>
+
+
+
+
                                 </tbody>
-                                </table>
+                                <tfoot>
+                                    <tr>
+                                        <th>Num</th>
+                                        <th>Name</th>
+                                        <th> tuitionFee(Birr)</th>
+                                        <th> foodExpenseFee(Birr)</th>
+                                        <th> beddingExpenseFee(Birr)</th>
+                                        <th>Total</th>
+                                        <th>year</th>
+                                        <th>Status</th>
+                                        <th>action</th>
+                                        <th></th>
+
+
+
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -101,6 +187,4 @@ confirm_logged_in();
 
     <?php include '../include/script.php' ?>
 </body>
-
-
 </html>

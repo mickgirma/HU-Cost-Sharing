@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        HAWASSA UNIVERSITY COST SHARING
+        HU COST SHARING MANAGEMENT SYSTEM
     </title>
 
     <!-- Google Font: Source Sans Pro -->

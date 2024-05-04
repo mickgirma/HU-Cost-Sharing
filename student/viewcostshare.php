@@ -98,7 +98,7 @@ alert('You Are Graduate');
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">View Cost-share Information</h1>
+                            <h1 class="m-0 text-dark">View Your Cost-share Information</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -181,7 +181,6 @@ alert('You Are Graduate');
                                     <div class="row">
                                         <div class="col-12">
                                             <h4>
-
                                                 <small class="float-right">Date: 2/10/2023</small>
                                             </h4>
                                         </div>
@@ -353,7 +352,7 @@ alert('You Are Graduate');
 
                                         <!-- /.col -->
                                         <div class="col-6">
-                                            <p class="lead">Amount Due 2/22/2023</p>
+                                            <!-- <p class="lead">Amount Due 2/22/2023</p> -->
 
                                             <div class="table-responsive">
                                                 <table class="table">

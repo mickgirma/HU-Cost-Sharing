@@ -1,16 +1,44 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <?php include '../include/header.php' ?>
 <?php include '../db/database.php' ?>
 <?php include '../include/session.php' ?>
 <?php include '../include/function.php' ?>
+<?php
+//login confirmation
+confirm_logged_in();
+
+?>
+
+<?php
+$user_id = $_SESSION['id'];
+if (isset($_POST['send'])) {
+
+  echo $title  =  $_POST['title'];
+  echo $message  =  $_POST['message'];
+  echo $send_to  =  $_POST['send_to'];
+  echo $user_id = $_SESSION['id'];
+  $date = $_POST['date'];
+  $sql = mysqli_query($conn, "INSERT INTO `notice`
+  (`user_id`, `send_to`, `title`, `message`,`date`)
+   VALUES ('$user_id','$send_to','$title','$message','$date')");
+}
+if (isset($_GET['action'])) {
+  echo $id = $_GET['id'];
+  mysqli_query($conn, "DELETE FROM `notice` WHERE id = '$id'");
+  $_SESSION['delmsg'] = "notice Deleted !!";
+  header("location:manage_notice.php");
+}
+?>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
+
         <!-- Navbar -->
         <?php include 'include/navbar.php' ?>
         <!-- /.navbar -->
-        
+
         <!-- Main Sidebar Container -->
         <?php include 'include/sidebar.php' ?>
 
@@ -31,7 +59,8 @@
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
-            </div><!-- /.content-header -->
+            </div>
+            <!-- /.content-header -->
 
             <!-- Main content -->
             <div class="content">
@@ -43,24 +72,32 @@
                                 <input type="hidden" name="date" value="<?php echo date('Y-m-d H:i:s'); ?>">
                                 <div class="form-group">
                                     <label for="title">Title</label>
+
                                     <input type="text" name="title" class="form-control is-valid" id="title" value="<?php if (isset($_POST['fullName'])) {
                                                                                                     echo $_POST['title'];
-                                                                                                  } ?>" pattern=".([A-zÀ-ž\s]){3,20}" title="4 to 20 characters" required>
+                                                                                                  } ?>"
+                                        pattern=".([A-zÀ-ž\s]){3,20}" title="4 to 20 characters" required>
                                     <div class="invalid-feedback">
                                         Please enter title.
                                     </div>
+
                                 </div>
+
                                 <div class="form-group">
                                     <label for="send_to">Notice For</label>
                                     <select name="send_to" id="send_to" class="custom-select">
-                                        <option value="College_Register">Data Analyst</option>
-                                        <option value="Inland_Revenue">Inland Revenue</option>
-                                        <option value="Inland_Revenue">student</option>
+                                    <option value="College_Register">Data Analyst </option>
+                                        <option value="Inland_Revenue">Revenue Officer </option>
+                                        <option value="Inland_Revenue"> Student </option>
                                     </select>
+
                                 </div>
+
                                 <div class="form-group">
-                                    <label>Notice Message</label>
-                                    <textarea name="message" class="form-control is-valid" rows="3" placeholder="Enter message" pattern=".([A-zÀ-ž\s]){3,20}" title="4 to 20 characters" required spellcheck="false"></textarea>
+                                    <label>Notice Message </label>
+                                    <textarea name="message" class="form-control is-valid" rows="3"
+                                        placeholder="Enter message" pattern=".([A-zÀ-ž\s]){3,20}"
+                                        title="4 to 20 characters" required spellcheck="false"></textarea>
                                     <div class="invalid-feedback">
                                         Please enter message.
                                     </div>
@@ -71,33 +108,75 @@
                         <div class="col-md-7">
                             <!-- The time line -->
                             <div class="timeline">
-                                <!-- PHP loop starts here -->
+                                <?php
+
+                $sql = mysqli_query($conn, "SELECT notice.id AS id, notice.date AS date,notice.user_id AS user_id, notice.title AS title, notice.message AS message, user.fullName AS full_name FROM notice INNER JOIN user ON notice.user_id = user.id WHERE user_id = '$user_id'  ORDER BY `date` DESC");
+                while ($row = mysqli_fetch_assoc($sql)) {
+
+                  $id = $row['id'];
+                  $date = $row['date'];
+                  $title = $row['title'];
+                  $full_name = $row['full_name'];
+                  $message = $row['message'];
+                  $user_id = $row['user_id'];
+                  $date1 = new DateTime($date);
+                  $result = $date1->format('Y-m-d H:i:s');
+
+
+
+
+
+                ?>
+
                                 <!-- timeline time label -->
                                 <div class="time-label">
+                                    <span class="bg-red"><?php echo htmlentities($result) ?></span>
                                 </div>
                                 <!-- /.timeline-label -->
                                 <!-- timeline item -->
                                 <div>
                                     <i class="fas fa-envelope bg-blue"></i>
                                     <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i>
+                                            <?php echo timePosted($date); ?></span>
+
+                                        <h3 class="timeline-header"><a href="#"><?php echo htmlentities($title) ?></a>
+                                            <?php echo htmlentities($full_name) ?></h3>
+
+
+
                                         <div class="timeline-body">
+                                            <?php echo htmlentities($message) ?>
                                         </div>
                                         <div class="timeline-footer">
-                                            <a class="btn btn-danger btn-sm" onClick="return confirm('Are you sure you want to Delete?')"><i class="far fa-trash-alt"></i> delete</a>
+                                            <a class="btn btn-danger btn-sm"
+                                                href="manage_notice.php?id=<?php echo $id ?>&action=delete"
+                                                onClick="return confirm('Are you sure you want to Delete?')"><i
+                                                    class="far fa-trash-alt"></i> delete</a>
+
                                         </div>
                                     </div>
                                 </div>
+
+                                <?php
+                } ?>
+
+
+
                                 <!-- END timeline item -->
                                 <div>
                                     <i class="fas fa-clock bg-gray"></i>
                                 </div>
-                                <!-- PHP loop ends here -->
-                            </div><!-- /.timeline -->
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.row -->
                 </div><!-- /.container-fluid -->
-            </div><!-- /.content -->
-        </div><!-- /.content-wrapper -->
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
 
         <!-- Control Sidebar -->
         <!-- Control sidebar content goes here -->
@@ -111,9 +190,11 @@
 
         <!-- Main Footer -->
         <?php include 'include/footer.php' ?>
-    </div><!-- ./wrapper -->
+    </div>
+    <!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->
-    <!-- <?php include '../include/script.php' ?> -->
+
+    <?php include '../include/script.php' ?>
 </body>
 </html>
