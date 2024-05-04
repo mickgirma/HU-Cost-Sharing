@@ -27,10 +27,10 @@ if (isset($_POST['send'])) {
   $sql = mysqli_query($conn, "INSERT INTO `costshareform`(`collegeName`, `tuitionFee`, `foodExpenseFee`, `beddingExpenseFee`, `userId`,`total`,`year`) VALUES ('$collegeName','$tuitionFee','$foodExpenseFee','$beddingExpenseFee','$userId','$total','$year')");
   if ($sql) {
 
-    $msg = "Cost Share Price Sent Successfully 🚀!!";
+    $msg = "Cost Share Price Sent Successfully";
   } else {
     $msgClass = "alert-danger";
-    $msg = "Can't Sent 👮‍♂️!!";
+    $msg = "Can't Send";
   }
 }
 
@@ -96,8 +96,6 @@ if (isset($_POST['send'])) {
                                         </div>
                                     </div>
                                     <div class="card-body" style="display: block;">
-                                        <h4>Estimated cost to be borne by the beneficiary in the current academic year
-                                        </h4>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="">Select Cost Share Year</label>
