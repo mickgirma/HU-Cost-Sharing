@@ -12,6 +12,6 @@ $conn = mysqli_connect('localhost', 'root', '', 'cost_share');
 $connTest = "";
 if ($conn)
 
-  $connTest = "<h1>Database Connected everything is fine 🌝</h1>";
+  $connTest = "<h1>Database Connected</h1>";
 else
   echo "not working";

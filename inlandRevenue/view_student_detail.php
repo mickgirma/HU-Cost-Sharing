@@ -12,7 +12,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 confirm_logged_in();
 
 ?>
+<?php
+echo $uid = intval($_GET['id']);
 
+?>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -48,7 +51,39 @@ confirm_logged_in();
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        
+                        <?php
+            $sql = mysqli_query($conn, "SELECT user.id,`user_id` ,subcategory.subcategoryName as catName,user.Gender, user.userPhoto,user.fullName,user.phoneNumber, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate` FROM `studentcostfill` INNER JOIN user ON studentcostfill.user_id = '$uid' INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName WHERE user.id = '$uid'");
+            while ($row = mysqli_fetch_assoc($sql)) {
+              $user_id = $row['user_id'];
+              $userPhoto = $row['userPhoto'];
+              $parentFullName = $row['parentFullName'];
+              $parentRegion = $row['parentRegion'];
+              $parentZone = $row['parentZone'];
+              $parentCity = $row['parentCity'];
+              $parentWoreda = $row['parentWoreda'];
+              $parentHouseNumber = $row['parentHouseNumber'];
+              $parentPostalBox = $row['parentPostalBox'];
+              $schoolName = $row['schoolName'];
+              $schoolRegion = $row['schoolRegion'];
+              $schoolKebele = $row['schoolKebele'];
+              $schoolWoreda = $row['schoolWoreda'];
+              $schoolCity = $row['schoolCity'];
+              $schoolCompletedDate = $row['schoolCompletedDate'];
+              $departmentType = $row['departmentType'];
+              $departmentName = $row['departmentName'];
+              $departmentYear = $row['departmentYear'];
+              $collegeStartDate = $row['collegeStartDate'];
+              $studentStatus = $row['studentStatus'];
+              $servicesInKind = $row['servicesInKind'];
+              $servicesInCash = $row['servicesInCash'];
+              $withDrawDate = $row['withDrawDate'];
+              $fullName = $row['fullName'];
+              $phoneNumber = $row['phoneNumber'];
+              $Gender = $row['Gender'];
+              $catName = $row['catName'];
+
+
+            ?>
                         <div class="col-md-1"></div>
                         <div class="col-md-8">
                             <div class="container-fluid">
@@ -65,7 +100,7 @@ confirm_logged_in();
                                         <div class="col-12">
                                             <h4>
 
-                                                <small class="float-right">Date: 4/26/2024</small>
+                                                <small class="float-right">Date: 4/10/2023</small>
                                             </h4>
                                         </div>
                                         <!-- /.col -->
@@ -75,56 +110,56 @@ confirm_logged_in();
                                         <div class="col-sm-4 invoice-col">
                                             <h4>Student Information</h4>
                                             <address>
-                                                <strong></strong><br>
+                                                <strong><?php echo $fullName ?></strong><br>
 
 
-                                                Phone: <br>
+                                                Phone: <?php echo $phoneNumber ?><br>
 
-                                                Gender:  <br>
-                                                Department Type:  <br>
-                                                Department Name: 
+                                                Gender: <?php echo $Gender ?> <br>
+                                                Department Type: <?php echo $departmentType ?> <br>
+                                                Department Name: <?php echo $departmentName ?>
                                             </address>
                                         </div>
                                         <!-- /.col -->
                                         <div class="col-sm-4 invoice-col">
                                             <h4>Parent Details</h4>
                                             <address>
-                                                Full Name:<strong></strong><br>
-                                                Address : <br>
-                                                Region : <br>
-                                                Wereda :<br>
-                                                Zone :  <br>
-                                                House Number :
+                                                Full Name:<strong><?php echo $parentFullName ?></strong><br>
+                                                Address : <?php echo $parentCity ?><br>
+                                                Region : <?php echo $parentRegion ?><br>
+                                                Wereda : <?php echo $parentWoreda ?><br>
+                                                Zone : <?php echo $parentZone ?> <br>
+                                                House Number :<?php echo $parentHouseNumber ?>
                                             </address>
                                         </div>
                                         <!-- /.col -->
                                         <div class="col-sm-4 invoice-col">
                                             <h4>Shool Details</h4>
                                             <address>
-                                                School Name:<strong></strong><br>
-                                                Adress : <br>
-                                                Region : <br>
-                                                Wereda : <br>
-                                                Kebel :  <br>
-                                                School Completed Date:
+                                                School Name:<strong><?php echo $schoolName ?></strong><br>
+                                                Adress : <?php echo $schoolCity ?><br>
+                                                Region : <?php echo $schoolRegion ?><br>
+                                                Wereda : <?php echo $schoolWoreda ?><br>
+                                                Kebel : <?php echo $schoolKebele ?> <br>
+                                                School Completed Date:<?php echo $schoolCompletedDate ?>
                                             </address>
                                         </div>
                                         <div class="col-sm-6 invoice-col">
                                             <h4>Department Detail</h4>
                                             <address>
-                                                Department Type:<strong></strong><br>
-                                                Department Name : <br>
-                                                Department Year : <br>
-                                                College Start Date : <br>
-                                                Kebel :  <br>
-                                                School Completed Date:
+                                                Department Type:<strong><?php echo $departmentType ?></strong><br>
+                                                Department Name : <?php echo $departmentName ?><br>
+                                                Department Year : <?php echo $departmentYear ?><br>
+                                                College Start Date : <?php echo $collegeStartDate ?><br>
+                                                Kebel : <?php echo $schoolKebele ?> <br>
+                                                School Completed Date:<?php echo $schoolCompletedDate ?>
                                             </address>
                                         </div>
                                         <div class="col-sm-6 invoice-col">
                                             <h4>Cost Share Form Detail</h4>
                                             <address>
-                                                Service In Kind :<strong></strong><br>
-                                                Service In Cash :<strong> </strong><br>
+                                                Service In Kind :<strong><?php echo $servicesInKind ?></strong><br>
+                                                Service In Cash :<strong> <?php echo $servicesInCash ?></strong><br>
 
                                             </address>
                                         </div>
@@ -146,15 +181,25 @@ confirm_logged_in();
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    
+                                                    <?php
+                            $subMenu = mysqli_query($conn, "SELECT * FROM `costshareform` Where collegeName = '$catName'");
+                            while ($data = mysqli_fetch_assoc($subMenu)) {
+
+                            ?>
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td><?php echo $data['id'] ?></td>
+                                                        <td><?php echo $data['collegeName'] ?></td>
+                                                        <td><?php echo $data['tuitionFee'] ?></td>
+                                                        <td><?php echo $data['foodExpenseFee'] ?></td>
+                                                        <td><?php echo $data['beddingExpenseFee'] ?></td>
                                                     </tr>
-                                                    
+                                                    <?php
+                            }
+                            ?>
+
+
+
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -166,7 +211,7 @@ confirm_logged_in();
 
                                         <!-- /.col -->
                                         <div class="col-6">
-                                            <p class="lead">Amount Due 4/26/2024</p>
+                                            <p class="lead">Amount Due 2/22/2021</p>
 
                                             <div class="table-responsive">
                                                 <table class="table">
@@ -196,7 +241,7 @@ confirm_logged_in();
                                 <!-- /.row -->
                             </div><!-- /.container-fluid -->
                         </div>
-                      
+                        <?php } ?>
                     </div>
 
                 </div>
