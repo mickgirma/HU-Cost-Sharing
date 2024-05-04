@@ -12,7 +12,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 //login confirmation
 confirm_logged_in();
 ?>
-
+<?php
+$currentUserId = $_SESSION['id'];
+if (isset($_GET['status'])) {
+  echo $id = $_GET['id'];
+  mysqli_query($conn, "UPDATE `costshareform` SET `status`= 'active' WHERE  `id`= '$id'");
+  $_SESSION['delmsg'] = "User Suspend !!";
+  header("location:manage_costshare.php");
+}
+?>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
@@ -30,7 +38,7 @@ confirm_logged_in();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Estimated cost to be borne by the beneficiary in the current
+                            <h1 class="m-0 text-dark">Estimated cost in the current
                                 academic year</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
@@ -70,31 +78,70 @@ confirm_logged_in();
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    <?php
+                  $num = 0;
+                  $sql = mysqli_query($conn, "SELECT costshareform.id, `collegeName`,subcategory.subcategoryName as categoryName ,`tuitionFee`, `foodExpenseFee`, `beddingExpenseFee`, `userId`, `total`, `status`,`action`,`year` FROM `costshareform` INNER JOIN subcategory on collegeName = subcategory.id WHERE userId = '$currentUserId'");
+                  while ($row = mysqli_fetch_assoc($sql)) {
+                    $id = $row['id'];
+                    $collegeName = $row['categoryName'];
+                    $tuitionFee = $row['tuitionFee'];
+                    $foodExpenseFee = $row['foodExpenseFee'];
+                    $beddingExpenseFee = $row['beddingExpenseFee'];
+                    $status = $row['status'];
+                    $action = $row['action'];
+                    $year = $row['year'];
+
+                    $total = $tuitionFee + $foodExpenseFee + $beddingExpenseFee;
+                    $num++;
+                    if ($status == 'active') {
+                      $btnColor = 'btn btn-primary btn-xs btn-disable';
+
+                      $edit = 'd-none';
+                    } else {
+                      $btnColor = 'btn btn-danger btn-xs btn-disable';
+                      $edit = "";
+                    }
+                  ?>
+
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td><?php echo htmlspecialchars($num); ?></td>
+                                        <td><?php echo htmlspecialchars($collegeName); ?></td>
+                                        <td><?php echo htmlspecialchars($tuitionFee); ?></td>
+                                        <td><?php echo htmlspecialchars($foodExpenseFee); ?></td>
+                                        <td><?php echo htmlspecialchars($beddingExpenseFee); ?></td>
+                                        <td><?php echo htmlspecialchars($total); ?></td>
+                                        <td><?php echo htmlspecialchars($year); ?></td>
 
-                                        <td><button class="">
-                                                </button></td>
+                                        <td><button class="<?php echo htmlentities($btnColor) ?>">
+                                                <?php echo htmlentities($status) ?></button></td>
 
-                                        <td> <a href="edit_cost_share.php?id="
-                                                class="">Edit</a>
+                                        <td> <a href="edit_cost_share.php?id=<?php echo $id ?>"
+                                                class="<?php echo $edit ?>">Edit</a>
                                         </td>
 
                                     </tr>
-                                    
+                                    <?php
+                  }
 
-
-
-
+                  ?>
                                 </tbody>
-                                
+                                <tfoot>
+                                    <tr>
+                                        <th>Num</th>
+                                        <th>Name</th>
+                                        <th> tuitionFee(Birr)</th>
+                                        <th> foodExpenseFee(Birr)</th>
+                                        <th> beddingExpenseFee(Birr)</th>
+                                        <th>Total</th>
+                                        <th>year</th>
+
+                                        <th>action</th>
+                                        <th>edit</th>
+
+
+
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <!-- /.col -->
@@ -125,14 +172,4 @@ confirm_logged_in();
 
     <?php include '../include/script.php' ?>
 </body>
-
-
-
-
-
-
-
-
-
-
 </html>
