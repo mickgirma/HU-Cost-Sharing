@@ -54,27 +54,43 @@ confirm_logged_in();
 
                                 <!-- /.timeline-label -->
                                 <!-- timeline item -->
-                             
+                             <?php
+                             $user_id = $_SESSION['id'];
+
+                $sql = mysqli_query($conn, "SELECT notice.id AS id, notice.date AS date,notice.user_id AS user_id, notice.title AS title, notice.message AS message, user.fullName AS full_name FROM notice INNER JOIN user ON notice.user_id = user.id WHERE user_id = '$user_id' ORDER BY `date` DESC");
+                while ($row = mysqli_fetch_assoc($sql)) 
+                {
+
+                  $id = $row['id'];
+                  $date = $row['date'];
+                  $title = $row['title'];
+                  $full_name = $row['full_name'];
+                  $message = $row['message'];
+                  $user_id = $row['user_id'];
+                  $date1 = new DateTime($date);
+                  $result = $date1->format('Y-m-d H:i:s');
+
+                ?>
                                 <div class="time-label">
-                                    <span class="bg-red"></span>
+                                    <span class="bg-red"><?php echo htmlentities($result) ?></span>
                                 </div>
                                 <div>
                                     <i class="fas fa-envelope bg-blue"></i>
                                     <div class="timeline-item">
                                         <span class="time"><i class="fas fa-clock"></i>
-                                            </span>
+                                            <?php echo timePosted($date); ?></span>
                                         <h3 class="timeline-header"><a
-                                                href="#"></a> sent for student</h3>
-                                        <h3 class="timeline-header"></h3>
+                                                href="#"><?php echo htmlentities($full_name) ?></a> send for student</h3>
+                                        <h3 class="timeline-header"><?php echo htmlentities($title) ?></h3>
 
 
                                         <div class="timeline-body">
-                                            
+                                            <?php echo htmlentities($message) ?>
                                         </div>
 
                                     </div>
                                 </div>
-                                
+                                <?php } ?>
 
 
                                 <!-- END timeline item -->
