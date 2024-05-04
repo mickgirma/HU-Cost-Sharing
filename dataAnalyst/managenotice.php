@@ -13,7 +13,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
 confirm_logged_in();
 
 ?>
+<?php
+$user_id = $_SESSION['id'];
+if (isset($_POST['send'])) {
 
+  echo $title  =  $_POST['title'];
+  echo $message  =  $_POST['message'];
+  echo $send_to  =  $_POST['send_to'];
+  echo $user_id = $_SESSION['id'];
+  $date = $_POST['date'];
+  $sql = mysqli_query($conn, "INSERT INTO `notice`
+  (`user_id`, `send_to`, `title`, `message`,`date`)
+   VALUES ('$user_id','$send_to','$title','$message','$date')");
+}
+if (isset($_GET['action'])) {
+  echo $id = $_GET['id'];
+  mysqli_query($conn, "DELETE FROM `notice` WHERE id = '$id'");
+  $_SESSION['delmsg'] = "notice Deleted !!";
+  header("location:managenotice.php");
+}
+?>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -58,6 +77,7 @@ confirm_logged_in();
 
                                     <input type="text" name="title" class="form-control is-valid" id="title" value=""
                                         pattern=".([A-zÀ-ž\s]){3,20}" title="4 to 20 characters" required>
+                                        
                                     <div class="invalid-feedback">
                                         Please enter title.
                                     </div>
@@ -83,11 +103,29 @@ confirm_logged_in();
                         <div class="col-md-7">
                             <!-- The time line -->
                             <div class="timeline">
-                                
+                                <?php
+
+                $sql = mysqli_query($conn, "SELECT notice.id AS id, notice.date AS date,notice.user_id AS user_id, notice.title AS title, notice.message AS message, user.fullName AS full_name FROM notice INNER JOIN user ON notice.user_id = user.id WHERE user_id = '$user_id' ORDER BY `date` DESC");
+                while ($row = mysqli_fetch_assoc($sql)) {
+
+                  $id = $row['id'];
+                  $date = $row['date'];
+                  $title = $row['title'];
+                  $full_name = $row['full_name'];
+                  $message = $row['message'];
+                  $user_id = $row['user_id'];
+                  $date1 = new DateTime($date);
+                  $result = $date1->format('Y-m-d H:i:s');
+
+
+
+
+                
+                ?>
 
                                 <!-- timeline time label -->
                                 <div class="time-label">
-                                    <span class="bg-red"></span>
+                                    <span class="bg-red"><?php echo htmlentities($result) ?></span>
                                 </div>
                                 <!-- /.timeline-label -->
                                 <!-- timeline item -->
@@ -95,19 +133,19 @@ confirm_logged_in();
                                     <i class="fas fa-envelope bg-blue"></i>
                                     <div class="timeline-item">
                                         <span class="time"><i class="fas fa-clock"></i>
-                                            </span>
+                                            <?php echo timePosted($date); ?></span>
 
-                                        <h3 class="timeline-header"><a href="#"></a>
-                                            </h3>
+                                        <h3 class="timeline-header"><a href="#"><?php echo htmlentities($title) ?></a>
+                                            <?php echo htmlentities($full_name) ?></h3>
 
 
 
                                         <div class="timeline-body">
-                                           
+                                            <?php echo htmlentities($message) ?>
                                         </div>
                                         <div class="timeline-footer">
                                             <a class="btn btn-danger btn-sm"
-                                                href="managenotice.php?id=&action=delete"
+                                                href="managenotice.php?id=<?php echo $id ?>&action=delete"
                                                 onClick="return confirm('Are you sure you want to Delete?')"><i
                                                     class="far fa-trash-alt"></i> delete</a>
 
@@ -115,7 +153,8 @@ confirm_logged_in();
                                     </div>
                                 </div>
 
-                                
+                                <?php
+                } ?>
 
 
 
@@ -150,24 +189,6 @@ confirm_logged_in();
     <!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <?php include '../include/script.php' ?>
 </body>
-
-
 </html>

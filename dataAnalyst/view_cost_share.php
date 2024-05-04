@@ -14,9 +14,28 @@ confirm_logged_in();
 
 
 ?>
+<?php
+$college = $_SESSION['college'];
+if (isset($_GET['status'])) {
 
 
+  echo $id = $_GET['id'];
+  $check_college = mysqli_query($conn, "SELECT costshareform.id, `collegeName`,subcategory.subcategoryName FROM `costshareform` INNER JOIN subcategory on collegeName = subcategory.id WHERE costshareform.id = '$id' AND subcategory.subcategoryName =  '$college'");
+  $college_num_row = mysqli_num_rows($check_college);
+  if ($college_num_row > 0) {
+    mysqli_query($conn, "UPDATE `costshareform` SET `action`= 'accept' WHERE  `id`= '$id'");
 
+    header("location:view_cost_share.php");
+  } else {
+?>
+<script>
+alert('you cannot update status because you are ' + '<?php echo $_SESSION['college'] ?>')
+</script>
+<?php
+
+  }
+}
+?>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -35,7 +54,7 @@ confirm_logged_in();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Estimated cost in the current
+                            <h1 class="m-0 text-dark">Estimated cost to be borne by the beneficiary in the current
                                 academic year</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
@@ -75,24 +94,48 @@ confirm_logged_in();
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        
+                                    <?php
+                  $num = 0;
+                  $sql = mysqli_query($conn, "SELECT costshareform.id,subcategory.subcategoryName AS categoryName, `collegeName`, `tuitionFee`, `foodExpenseFee`, `beddingExpenseFee`, `userId`, `status`,`total`,`action`,`year` FROM `costshareform` INNER JOIN subcategory on subcategory.id = costshareform.collegeName WHERE status = 'active'");
+                  while ($row = mysqli_fetch_assoc($sql)) {
+                    $id = $row['id'];
+                    $collegeName = $row['categoryName'];
+                    $tuitionFee = $row['tuitionFee'];
+                    $foodExpenseFee = $row['foodExpenseFee'];
+                    $beddingExpenseFee = $row['beddingExpenseFee'];
+                    $status = $row['status'];
+                    $year = $row['year'];
 
-                                        <td><button class="</button></td>
-                                        <td> <a href=""
-                                                onClick="return confirm('Are you sure you want to Active this Cost Share?')">&nbsp;
+                    $action = $row['action'];
+                    $total = $tuitionFee + $foodExpenseFee + $beddingExpenseFee;
+                    $num++;
+                    if ($status == 'active') {
+                      $btnColor = 'btn btn-primary btn-xs btn-disable';
+                    } else {
+                      $btnColor = 'btn btn-danger btn-xs btn-disable';
+                    }
+                  ?>
+
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($num); ?></td>
+                                        <td><?php echo htmlspecialchars($collegeName); ?></td>
+                                        <td><?php echo htmlspecialchars($tuitionFee); ?></td>
+                                        <td><?php echo htmlspecialchars($foodExpenseFee); ?></td>
+                                        <td><?php echo htmlspecialchars($beddingExpenseFee); ?></td>
+                                        <td><?php echo htmlspecialchars($total); ?></td>
+                                        <td><?php echo htmlspecialchars($year); ?></td>
+
+                                        <td><button class="<?php echo htmlentities($btnColor) ?>">
+                                                <?php echo htmlentities($status) ?></button></td>
+                                        <td> <a href="view_cost_share.php?id=<?php echo $id ?>&status=active"
+                                                onClick="return confirm('Are you sure you want to Active this Cost Share?')"><?php echo htmlspecialchars($action) ?>&nbsp;
                                                 <i class="far fa-check-circle"></i></a></td>
 
                                     </tr>
-                                    
+                                    <?php
+                  }
+
+                  ?>
 
 
 

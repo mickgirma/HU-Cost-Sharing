@@ -110,7 +110,7 @@ if (isset($_GET['action'])) {
                             <div class="timeline">
                                 <?php
 
-                $sql = mysqli_query($conn, "SELECT notice.id AS id, notice.date AS date,notice.user_id AS user_id, notice.title AS title, notice.message AS message, user.fullName AS full_name FROM notice INNER JOIN user ON notice.user_id = user.id WHERE user_id = '$user_id'  ORDER BY `date` DESC");
+                $sql = mysqli_query($conn, "SELECT notice.id AS id, notice.date AS date, notice.user_id AS user_id, notice.title AS title, notice.message AS message, user.fullName AS full_name FROM notice INNER JOIN user ON notice.user_id = user.id ORDER BY `date` DESC");
                 while ($row = mysqli_fetch_assoc($sql)) {
 
                   $id = $row['id'];

@@ -9,7 +9,39 @@
 confirm_logged_in();
 
 ?>
+<?php
+$college = $_SESSION['college'];
+// echo $uid = intval($_GET['id']);
 
+if (isset($_GET['updateyear'])) {
+
+  echo $updateyear = $_GET['updateyear'];
+  echo $costid = $_GET['id'];
+  if ($updateyear == 'First Year') {
+    $updateyear = 'Second Year';
+    $year = 1;
+  } else if ($updateyear == 'Second Year') {
+    $year = 2;
+    $updateyear = 'Third Year';
+  } else if ($updateyear == 'Third Year') {
+    $year = 3;
+    $updateyear = 'Forth Year';
+  } else if ($updateyear == 'Forth Year') {
+    $year = 4;
+  } else if ($updateyear == 'Fifth Year') {
+    $year = 5;
+  }
+  $year++;
+  // $sql = mysqli_query($conn, "UPDATE `studentcostshareyear` SET `year`='$year',`yearName` ='$updateyear' WHERE `user_id`= '$costid'");
+  $updateyear = mysqli_query($conn, "UPDATE `studentcostfill` SET `departmentYear` ='$updateyear' ,`cost_stat` = 'off' WHERE `user_id`= '$costid'");
+  if ($sql) {
+    $_SESSION['delmsg'] = "it Workers fine $cost_id";
+  }
+  $_SESSION['delmsg'] = "it Not Working fine $cost_id";
+  header("location:viewstudent.php");
+}
+
+?>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -28,7 +60,7 @@ confirm_logged_in();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">View Student Information</h1>
+                            <h1 class="m-0 text-dark">View Student Information <?php echo $college ?></h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -45,7 +77,39 @@ confirm_logged_in();
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        
+                        <?php
+
+            // echo $uid = intval($_GET['id']);
+
+            if (isset($_GET['updateyear'])) {
+
+              echo $updateyear = $_GET['updateyear'];
+              echo $costid = $_GET['id'];
+              if ($updateyear == 'First Year') {
+                $updateyear = 'Second Year';
+                $year = 1;
+              } else if ($updateyear == 'Second Year') {
+                $year = 2;
+                $updateyear = 'Third Year';
+              } else if ($updateyear == 'Third Year') {
+                $year = 3;
+                $updateyear = 'Forth Year';
+              } else if ($updateyear == 'Forth Year') {
+                $year = 4;
+              } else if ($updateyear == 'Fifth Year') {
+                $year = 5;
+              }
+              $year++;
+              // $sql = mysqli_query($conn, "UPDATE `studentcostshareyear` SET `year`='$year',`yearName` ='$updateyear' WHERE `user_id`= '$costid'");
+              $updateyear = mysqli_query($conn, "UPDATE `studentcostfill` SET `departmentYear` ='$updateyear' ,`cost_stat` = 'off' WHERE `user_id`= '$costid'");
+              if ($sql) {
+                $_SESSION['delmsg'] = "it Workers fine $cost_id";
+              }
+              $_SESSION['delmsg'] = "it Not Working fine $cost_id";
+              // header("location:viewstudent.php");
+            }
+
+            ?>
                         <div class="col-md-12">
 
 
@@ -68,37 +132,99 @@ confirm_logged_in();
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+                                        <?php
+                    $sql = mysqli_query($conn, "SELECT studentcostfill.id,username, subcategory.subcategoryName AS catName, `user_id`, studentcostfill.userPhoto, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`,`graduated`,`numRow1` FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName INNER JOIN user on user.id =`user_id` WHERE subcategory.subcategoryName ='$college' AND numRow1='yes'");
+                    while ($row = mysqli_fetch_assoc($sql)) {
+                      $user_id = $row['user_id'];
+                      $userPhoto = $row['userPhoto'];
+                      $username = $row['username'];
+
+                      $parentFullName = $row['parentFullName'];
+                      $parentRegion = $row['parentRegion'];
+                      $parentZone = $row['parentZone'];
+                      $parentCity = $row['parentCity'];
+                      $parentWoreda = $row['parentWoreda'];
+                      $parentHouseNumber = $row['parentHouseNumber'];
+                      $parentPostalBox = $row['parentPostalBox'];
+                      $schoolName = $row['schoolName'];
+                      $schoolRegion = $row['schoolRegion'];
+                      $schoolKebele = $row['schoolKebele'];
+                      $schoolWoreda = $row['schoolWoreda'];
+                      $schoolCity = $row['schoolCity'];
+                      $schoolCompletedDate = $row['schoolCompletedDate'];
+                      $departmentType = $row['departmentType'];
+                      $departmentName = $row['departmentName'];
+                      $departmentYear = $row['departmentYear'];
+                      $collegeStartDate = $row['collegeStartDate'];
+                      $studentStatus = $row['studentStatus'];
+                      $servicesInKind = $row['servicesInKind'];
+                      $servicesInCash = $row['servicesInCash'];
+                      $withDrawDate = $row['withDrawDate'];
+                      $catName  = $row['catName'];
+                      $graduated = $row['graduated'];
+                      $msgClass = true;
+                      if ($graduated == 'Yes') {
+                        $msgClass = false;
+                      }
+
+
+                    ?>
+
                                         <tr>
 
-                                            <td></td>
+                                            <td><?php echo htmlentities($user_id) ?></td>
 
 
                                             <td>
-                                                
+                                                <img src="../images/<?php echo htmlentities($userPhoto); ?>"
+                                                    alt="Product 1" class="img-circle img-size-32 mr-2">
+                                                <?php echo htmlentities($username) ?>
                                             </td>
-                                            <td> </td>
-                                            <td> </td>
+                                            <td> <?php echo htmlentities($catName) ?></td>
+                                            <td> <?php echo htmlentities($departmentYear) ?></td>
 
-                                            <td></td>
-                                            <td></td>
+                                            <td><?php echo htmlspecialchars($servicesInKind) ?></td>
+                                            <td><?php echo htmlspecialchars($servicesInCash) ?></td>
                                             <td>
                                                 <a class="btn btn-primary"
-                                                    href="view_student_detail.php?id="><i
+                                                    href="view_student_detail.php?id=<?php echo $user_id ?>"><i
                                                         class="fas fa-pencil-alt mr-2"></i> View</a>
                                             </td>
                                             <td>
-                                                
-                                                <a href="viewstudent.php?id=&&updateyear="
-                                                    onClick="return confirm('Are you sure you want to Update Year this user?')"></a>
-                                               
+                                                <?php if ($msgClass) {
+                          ?>
+                                                <a href="viewstudent.php?id=<?php echo $user_id ?>&&updateyear=<?php echo $departmentYear ?>"
+                                                    onClick="return confirm('Are you sure you want to Update Year this user?')"><i
+                                                        class="far fa-check-circle"></i>Update
+                                                    Year</a>
+                                                <?php
+                          } else {
+                            echo "Student Graduate";
+                          }
+                          ?>
 
                                             </td>
                                         </tr>
 
-                                        
+                                        <?php   }
+
+                    ?>
                                     </tbody>
-                                    
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+
+                                            <th>Username</th>
+                                            <th>Department Name</th>
+
+                                            <th>departmentYear</th>
+                                            <th>servicesInKind</th>
+                                            <th>servicesInCash</th>
+                                            <th>Action</th>
+                                            <th>Year Status</th>
+
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
 
