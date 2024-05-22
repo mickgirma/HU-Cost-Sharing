@@ -31,7 +31,7 @@
                
                 <li class="nav-item">
                     <a href="manage_student.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-tasks"></i>
                         <p>
                             Manage Student
 
@@ -40,7 +40,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="view_student_information.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-eye"></i>
                         <p>
                             View Student Information
                             <!--  -->
@@ -49,17 +49,15 @@
 
                 </li>
                 <li class="nav-item">
-                    <a href="manage_costshare.php" class="nav-link">
+                    <a href="enableDisableCostShare.php" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Manage Costshare
-
-                        </p>
+                        <p>Manage Costshare</p>
                     </a>
                 </li>
+               
                 <li class="nav-item">
                     <a href="manage_notice.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-envelope"></i>
                         <p>
                             Manage Notice
 
@@ -69,7 +67,7 @@
                 
                 <li class="nav-item">
                     <a href="post_news.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-share-square"></i>
                         <p>
                             Post News
 
@@ -82,7 +80,7 @@
                 
                 <li class="nav-item">
                     <a href="manage_feedback.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-comment"></i>
                         <p>
                             Manage Feedback
                             <!--  -->
@@ -94,7 +92,7 @@
                 
                 <li class="nav-item">
                     <a href="send_message.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-paper-plane"></i>
                         <p>
                             Send Message
                             <!--  -->

@@ -24,16 +24,26 @@
 
         <li class="nav-item">
           <a href="viewcostshare.php" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
+            <i class="nav-icon fas fa-eye"></i>
             <p>
-              View Cost Share
+              View Costshare
 
             </p>
           </a>
         </li>
         <li class="nav-item">
+          <a href="view_student_detail.php" class="nav-link">
+            <i class="nav-icon fas fa-info"></i>
+            <p>
+              My Costshare Information
+
+            </p>
+          </a>
+
+        </li>
+        <li class="nav-item">
                     <a href="view_notice.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-envelope"></i>
                         <p>
                             View Notice
                             
@@ -44,7 +54,7 @@
 
         <li class="nav-item">
           <a href="fill_cost_share.php" class="nav-link">
-            <i class="nav-icon fas fa-th"></i>
+            <i class="nav-icon fas fa-fill"></i>
             <p>
               Fill Cost Information
 
@@ -62,6 +72,17 @@
           </a>
 
         </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-paper-plane"></i>
+            <p>
+              Send Application
+
+            </p>
+          </a>
+
+        </li>
+       
         <li class="nav-item">
           <a href="../login/logout.php" class="nav-link">
             <i class="nav-icon fas fa-power-off"></i>

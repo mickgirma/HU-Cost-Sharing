@@ -1,18 +1,26 @@
 <!DOCTYPE html>
-<?php
-include '../db/database.php';
-include '../include/function.php';
-include '../include/session.php'
-?>
-<?php
-//login confirmation
-confirm_logged_in();
-?>
-
-
 <html lang="en">
 <?php include '../include/header.php' ?>
+<?php include '../include/session.php' ?>
+<?php include '../db/database.php' ?>
+<?php
+// Login confirmation
+confirm_logged_in();
 
+// Function to update payment status
+if (isset($_POST['verify_payment'])) {
+    $cost_id = intval($_POST['cost_id']);
+    $stmt = $conn->prepare("UPDATE studentcostfill SET payment_verified = 1 WHERE id = ?");
+    $stmt->bind_param("i", $cost_id);
+    if ($stmt->execute()) {
+        echo "<script>alert('Payment verified successfully');</script>";
+    } else {
+        echo "<script>alert('Payment verification failed');</script>";
+    }
+    $stmt->close();
+}
+
+?>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -31,9 +39,7 @@ confirm_logged_in();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-
-                            <h1 class="m-0 text-dark">Send Payment Verification</h1>
-                            
+                            <h1 class="m-0 text-dark">Payment Verification</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -49,152 +55,105 @@ confirm_logged_in();
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
+                    <div class="row">
 
-                    
-                    
-                    
-                    <form action="" method="POST" enctype="multipart/form-data" class="was-validated">
+                        <div class="col-md-12">
 
-                        <div class="card text-dark bg-light shadow p-3 mt-5 mb-5 bg-white rounded">
                             <div class="card-body">
-                                <h5 class="card-title"></h5>
+                                <table id="example3" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Student ID</th>
+                                            <th>Student Full Name</th>
+                                            <th>Category Name</th>
+                                            <th>Department Year</th>
+                                            <th>Services In Kind</th>
+                                            <th>Services In Cash</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $sql = mysqli_query($conn, "SELECT studentcostfill.id, subcategory.subcategoryName AS catName, `user_id`, user.userPhoto as userPhoto, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`, `graduated`,`send_graduate`, user.studentId as studentId , user.fullName as studFullName  FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName  INNER JOIN `user` ON user.id = studentcostfill.user_id");
+                                        while ($row = mysqli_fetch_assoc($sql)) {
+                                            $cost_id = $row['id'];
+                                            $userPhoto = $row['userPhoto'];
+                                            $catName = $row['catName'];
+                                            $departmentYear = $row['departmentYear'];
+                                            $servicesInKind = $row['servicesInKind'];
+                                            $servicesInCash = $row['servicesInCash'];
+                                            $studentId = $row['studentId'];
+                                            $studFullName = $row['studFullName'];
+                                        ?>
 
-                               
-                                <div class="row">
+                                            <tr>
+                                                <td><?php echo htmlentities($studentId); ?></td>
+                                                <td>
+                                                    <img src="../images/<?php echo htmlentities($userPhoto); ?>" alt="Profile Photo" class="img-circle img-size-64 mr-2">
+                                                    <?php echo htmlentities($studFullName); ?>
+                                                </td>
+                                                <td><?php echo htmlentities($catName); ?></td>
+                                                <td><?php echo htmlentities($departmentYear); ?></td>
+                                                <td><?php echo htmlspecialchars($servicesInKind); ?></td>
+                                                <td><?php echo htmlspecialchars($servicesInCash); ?></td>
+                                                <td>
+                                                    <form method="post">
+                                                        <input type="hidden" name="cost_id" value="<?php echo $cost_id; ?>">
+                                                        <button type="submit" name="verify_payment" class="btn btn-success">Verify Payment</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
 
+                                        <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Student ID</th>
+                                            <th>Student Full Name</th>
 
-
-                                    <div class="col-md-6 mt-3">
-                                        <form>
-
-
-                                            <div class="form-group users-list">
-                                                <label for="userPhoto">Send necessary file</label>
-                                                <input type="file" name="userPhoto" class="form-control-file"
-                                                    id="userPhoto" accept="image/*" onchange="preview_image(event)">
-                                                <img class="img-thumbnail" id="output_image" style="border-radius: 50%;
-        height: auto;
-        max-width: 50%;" />
-                                            </div>
-                                        </form>
-
-
-
-                                        <div class="form-group">
-                                            <label for="fullName">Full Name</label>
-
-                                            <input type="text" name="fullName" class="form-control is-valid"
-                                                id="fullName" value=""
-                                                pattern=".([A-zÀ-ž\s]){5,40}" title="6 to 30 characters" required>
-                                            <div class="invalid-feedback">
-                                                Please enter full Name.
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="fullName">Department</label>
-
-                                            <input type="text" name="fullName" class="form-control is-valid"
-                                                id="fullName" value=""
-                                                pattern=".([A-zÀ-ž\s]){5,40}" title="6 to 30 characters" required>
-                                            <div class="invalid-feedback">
-                                                Please enter department.
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="phoneNumber">Phone Number</label>
-                                            <div class="input-group mb-2">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">+251</div>
-                                                </div>
-                                                <input type="text" name="phoneNumber" class="form-control is-valid"
-                                                    id="phoneNumber"
-                                                    value=""
-                                                    pattern=".([0-9]){9,9}" title="only 10 numbers" required>
-                                            </div>
-
-
-                                            <div class="invalid-feedback">
-                                                Please enter Phone Number </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Gender">Gender</label>
-                                            <select name="Gender" id="Gender" class="custom-select">
-                                                <option value="Male">Male </option>
-                                                <option value="Female">Female</option>
-
-
-
-
-                                            </select>
-
-                                        </div>
-
-                                        
-                                        <div id="demo"></div>
-
-
-                                        
-
-
-
-
-
-                                        <div class="form-group">
-                                            <button type="submit" name="register"
-                                                class="btn btn-primary btn-block btn">Verify</button>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
+                                            <th>Category Name</th>
+                                            <th>Department Year</th>
+                                            <th>Services In Kind</th>
+                                            <th>Services In Cash</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </div>
 
-                            <!-- johoiho -->
-                    </form>
+                        </div>
+
+                    </div>
 
                 </div>
-                <!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content -->
+
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
+    <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <!-- Control sidebar content goes here -->
+    <!-- <aside class="control-sidebar control-sidebar-dark">
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside> -->
+    <!-- /.control-sidebar -->
 
     <!-- Main Footer -->
     <?php include 'include/footer.php' ?>
     </div>
     <!-- ./wrapper -->
 
-    <?php include '../include/script.php' ?>
-    <script>
-    $(document).ready(function() {
-
-        $('#role').on('change', function() {
-            var category_id = this.value;
-            $.ajax({
-                url: "select_role.php",
-                type: "POST",
-                data: {
-                    category_id: category_id
-                },
-                cache: false,
-
-
-
-                success: function(result) {
-
-
-
-                    $("#demo").html(result);
-                }
-            });
-        });
-    });
-    </script>
+    <!- - REQUIRED SCRIPTS -->
+        <?php include '../include/script.php' ?>
 </body>
 
 </html>

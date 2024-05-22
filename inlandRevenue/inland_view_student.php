@@ -53,21 +53,22 @@ confirm_logged_in();
                             <div class="card-body">
                                 <table id="example3" class="table table-bordered table-striped">
                                     <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Full Name</th>
-                                            <th>Username</th>
-                                            <th>Department Name</th>
-
-                                            <th>departmentYear</th>
-                                            <th>servicesInKind</th>
-                                            <th>servicesInCash</th>
-                                            <th>Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>User ID</th>
+                                        <th>Student ID</th>
+                                        <th>Student Full Name</th>
+                                        <th>Parent Full Name</th>
+                                        <th>Category Name</th>
+                                        <th>Department Year</th>
+                                        <th>Services In Kind</th>
+                                        <th>Services In Cash</th>
+                                        <th>Action</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                    $sql = mysqli_query($conn, "SELECT studentcostfill.id, subcategory.subcategoryName AS catName, `user_id`, `userPhoto`, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`, `graduated`,`send_graduate` FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName WHERE `graduated` = 'Yes' && send_graduate = 'Yes'");
+                    $sql = mysqli_query($conn, "SELECT studentcostfill.id, subcategory.subcategoryName AS catName, `user_id`, user.userPhoto as userPhoto, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`, `graduated`,`send_graduate`, user.studentId as studentId , user.fullName as studFullName  FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName  INNER JOIN
+                    `user` ON user.id = studentcostfill.user_id");
                     while ($row = mysqli_fetch_assoc($sql)) {
                       $user_id = $row['user_id'];
                       $userPhoto = $row['userPhoto'];
@@ -93,50 +94,48 @@ confirm_logged_in();
                       $servicesInCash = $row['servicesInCash'];
                       $withDrawDate = $row['withDrawDate'];
                       $catName  = $row['catName'];
+                      $studentId  = $row['studentId'];
+                      $studFullName  = $row['studFullName'];
 
 
                     ?>
 
-                                        <tr>
+<tr>
+    <td><?php echo htmlentities($user_id); ?></td>
+    <td><?php echo htmlentities($studentId); ?></td>
+    <td>
+        <img src="../images/<?php echo htmlentities($userPhoto); ?>" alt="Profile Photo" class="img-circle img-size-64 mr-2">
+        <?php echo htmlentities($studFullName); ?>
+    </td>
+    <td><?php echo htmlentities($parentFullName); ?></td>
+    <td><?php echo htmlentities($catName); ?></td>
+    <td><?php echo htmlentities($departmentYear); ?></td>
+    <td><?php echo htmlspecialchars($servicesInKind); ?></td>
+    <td><?php echo htmlspecialchars($servicesInCash); ?></td>
+    <td>
+        <a class="btn btn-primary" href="view_student_detail.php?id=<?php echo $user_id; ?>"><i class="fas fa-eye alt mr-2"></i> View</a>
+    </td>
+</tr>
 
-                                            <td><?php echo htmlentities($user_id) ?></td>
-                                            <td><?php echo htmlentities($parentFullName) ?></td>
-
-                                            <td>
-                                                <img src="../images/<?php echo htmlentities($userPhoto); ?>"
-                                                    alt="Product 1" class="img-circle img-size-32 mr-2">
-                                                <?php echo htmlentities($parentFullName) ?>
-                                            </td>
-                                            <td> <?php echo htmlentities($catName) ?></td>
-                                            <td> <?php echo htmlentities($departmentYear) ?></td>
-
-                                            <td><?php echo htmlspecialchars($servicesInKind) ?></td>
-                                            <td><?php echo htmlspecialchars($servicesInCash) ?></td>
-                                            <td>
-                                                <a class="btn btn-primary"
-                                                    href="view_student_detail.php?id=<?php echo $user_id ?>"><i
-                                                        class="fas fa-pencil-alt mr-2"></i> View</a>
-                                            </td>
-                                        </tr>
-
-                                        <?php   }
-
-                    ?>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Full Name</th>
-                                            <th>Username</th>
-                                            <th>Department Name</th>
-
-                                            <th>departmentYear</th>
-                                            <th>servicesInKind</th>
-                                            <th>servicesInCash</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+<?php
+}
+?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>User ID</th>
+                                        <th>Student ID</th>
+                                        <th>Student Full Name</th>
+                                        <th>Parent Full Name</th>
+                                      
+                                        <th>Category Name</th>
+                                        <th>Department Year</th>
+                                        <th>Services In Kind</th>
+                                        <th>Services In Cash</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                             </div>
 
                         </div>

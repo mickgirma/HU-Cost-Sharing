@@ -1,0 +1,531 @@
+$sql = mysqli_query($conn, "
+    SELECT 
+        studentcostfill.id, 
+        subcategory.subcategoryName AS catName, 
+        `user_id`, 
+        `userPhoto`, 
+        `parentFullName`, 
+        `parentRegion`, 
+        `parentZone`, 
+        `parentWoreda`, 
+        `parentCity`, 
+        `parentHouseNumber`, 
+        `parentPostalBox`, 
+        `schoolName`, 
+        `schoolRegion`, 
+        `schoolKebele`, 
+        `schoolWoreda`, 
+        `schoolCity`, 
+        `schoolCompletedDate`, 
+        `departmentType`, 
+        `departmentName`, 
+        `departmentYear`, 
+        `collegeStartDate`, 
+        `studentStatus`, 
+        `servicesInKind`, 
+        `servicesInCash`, 
+        `withDrawDate`, 
+        `graduated`,
+        `send_graduate`,
+        user.studentId
+    FROM 
+        `studentcostfill`
+    INNER JOIN 
+        subcategory ON subcategory.id = studentcostfill.departmentName
+    INNER JOIN
+        `user` ON `user`.studentId = studentcostfill.user_id
+    WHERE 
+        `graduated` = 'Yes' 
+        AND 
+        `send_graduate` = 'Yes'
+");
+
+
+departement type=5
+departement name=13
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `fullName` varchar(70) NOT NULL,
+  `userName` varchar(50) NOT NULL,
+  `phoneNumber` varchar(15) NOT NULL,
+  `Gender` varchar(50) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `userPhoto` varchar(150) NOT NULL,
+  `role` varchar(30) NOT NULL DEFAULT 'College_Register',
+  `studentID` varchar(50) DEFAULT NULL,
+  `FreshStudent` varchar(11) DEFAULT NULL,
+  `college` varchar(255) DEFAULT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'active',
+  `date` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL,
+  `categoryName` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `costshareform` (
+  `id` int(11) NOT NULL,
+  `collegeName` varchar(150) NOT NULL,
+  `tuitionFee` int(11) NOT NULL,
+  `foodExpenseFee` int(11) NOT NULL,
+  `beddingExpenseFee` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `total` varchar(50) NOT NULL,
+  `year` varchar(10) NOT NULL,
+  `status` varchar(50) NOT NULL DEFAULT 'disable',
+  `action` varchar(50) NOT NULL DEFAULT 'waiting '
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `notice` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `send_to` varchar(50) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `message` text NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `studentcostfill` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `userPhoto` varchar(200) NOT NULL,
+  `parentFullName` varchar(150) NOT NULL,
+  `parentRegion` varchar(50) NOT NULL DEFAULT 'none',
+  `parentZone` varchar(50) NOT NULL DEFAULT 'none',
+  `parentWoreda` varchar(50) NOT NULL DEFAULT 'none',
+  `parentCity` varchar(50) NOT NULL,
+  `parentHouseNumber` int(11) NOT NULL,
+  `parentPostalBox` int(11) NOT NULL,
+  `schoolName` varchar(150) NOT NULL,
+  `schoolRegion` varchar(50) NOT NULL DEFAULT 'none',
+  `schoolKebele` varchar(50) NOT NULL DEFAULT 'none',
+  `schoolWoreda` varchar(50) NOT NULL DEFAULT 'none',
+  `schoolCity` varchar(50) NOT NULL,
+  `schoolCompletedDate` date NOT NULL,
+  `departmentType` varchar(100) NOT NULL,
+  `departmentName` varchar(100) NOT NULL,
+  `departmentYear` varchar(100) NOT NULL,
+  `collegeStartDate` date NOT NULL,
+  `studentStatus` varchar(100) NOT NULL DEFAULT 'active',
+  `servicesInKind` varchar(60) NOT NULL,
+  `servicesInCash` varchar(60) NOT NULL,
+  `withDrawDate` date DEFAULT NULL,
+  `cost_stat` varchar(10) NOT NULL DEFAULT 'on',
+  `graduated` varchar(50) NOT NULL DEFAULT 'no',
+  `cost_dep_name` varchar(200) DEFAULT NULL,
+  `send_graduate` varchar(200) NOT NULL DEFAULT 'no',
+  `numRow` varchar(100) NOT NULL DEFAULT 'no',
+  `numRow1` varchar(50) NOT NULL DEFAULT 'no'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `studentcostshareyear` 
+(
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `year` varchar(200) NOT NULL,
+  `yearName` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `stud_year` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `year` varchar(10) NOT NULL,
+  `status` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `subcategory` (
+  `id` int(11) NOT NULL,
+  `categoryId` int(11) NOT NULL,
+  `subcategoryName` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `fullName` varchar(70) NOT NULL,
+  `userName` varchar(50) NOT NULL,
+  `phoneNumber` varchar(15) NOT NULL,
+  `Gender` varchar(50) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `userPhoto` varchar(150) NOT NULL,
+  `role` varchar(30) NOT NULL DEFAULT 'College_Register',
+  `studentID` varchar(50) DEFAULT NULL,
+  `FreshStudent` varchar(11) DEFAULT NULL,
+  `college` varchar(255) DEFAULT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'active',
+  `date` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `send_to` varchar(50) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `subtitle` varchar(200) NOT NULL,
+  `message` text NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+
+
+
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fullName` varchar(70) NOT NULL,
+  `userName` varchar(50) NOT NULL,
+  `phoneNumber` varchar(15) NOT NULL,
+  `Gender` varchar(50) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `userPhoto` varchar(150) NOT NULL,
+  `role` varchar(30) NOT NULL DEFAULT 'College_Register',
+  `studentID` varchar(50) DEFAULT NULL,
+  `FreshStudent` varchar(11) DEFAULT NULL,
+  `college` varchar(255) DEFAULT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'active',
+  `date` date NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `categoryName` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `costshareform` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `collegeName` varchar(150) NOT NULL,
+  `tuitionFee` int(11) NOT NULL,
+  `foodExpenseFee` int(11) NOT NULL,
+  `beddingExpenseFee` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `total` varchar(50) NOT NULL,
+  `year` varchar(10) NOT NULL,
+  `status` varchar(50) NOT NULL DEFAULT 'disable',
+  `action` varchar(50) NOT NULL DEFAULT 'waiting ',
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `notice` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `send_to` varchar(50) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `message` text NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_notice_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `studentcostfill` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `userPhoto` varchar(200) NOT NULL,
+  `parentFullName` varchar(150) NOT NULL,
+  `parentRegion` varchar(50) NOT NULL DEFAULT 'none',
+  `parentZone` varchar(50) NOT NULL DEFAULT 'none',
+  `parentWoreda` varchar(50) NOT NULL DEFAULT 'none',
+  `parentCity` varchar(50) NOT NULL,
+  `parentHouseNumber` int(11) NOT NULL,
+  `parentPostalBox` int(11) NOT NULL,
+  `schoolName` varchar(150) NOT NULL,
+  `schoolRegion` varchar(50) NOT NULL DEFAULT 'none',
+  `schoolKebele` varchar(50) NOT NULL DEFAULT 'none',
+  `schoolWoreda` varchar(50) NOT NULL DEFAULT 'none',
+  `schoolCity` varchar(50) NOT NULL,
+  `schoolCompletedDate` date NOT NULL,
+  `departmentType` varchar(100) NOT NULL,
+  `departmentName` varchar(100) NOT NULL,
+  `departmentYear` varchar(100) NOT NULL,
+  `collegeStartDate` date NOT NULL,
+  `studentStatus` varchar(100) NOT NULL DEFAULT 'active',
+  `servicesInKind` varchar(60) NOT NULL,
+  `servicesInCash` varchar(60) NOT NULL,
+  `withDrawDate` date DEFAULT NULL,
+  `cost_stat` varchar(10) NOT NULL DEFAULT 'on',
+  `graduated` varchar(50) NOT NULL DEFAULT 'no',
+  `cost_dep_name` varchar(200) DEFAULT NULL,
+  `send_graduate` varchar(200) NOT NULL DEFAULT 'no',
+  `numRow` varchar(100) NOT NULL DEFAULT 'no',
+  `numRow1` varchar(50) NOT NULL DEFAULT 'no'
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_studentcostfill_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `studentcostshareyear` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `year` varchar(200) NOT NULL,
+  `yearName` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_studentcostshareyear_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `stud_year` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `year` varchar(10) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_stud_year_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `subcategory` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `categoryId` int(11) NOT NULL,
+  `subcategoryName` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_subcategory_categoryId` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `send_to` varchar(50) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `subtitle` varchar(200) NOT NULL,
+  `message` text NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_news_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+INSERT INTO `user` (`fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) 
+VALUES ('Biniam Zerihun', 'admin', '0977012636', 'Male', 'admin', 'avatar4.png', 'Inland_Revenue', NULL, NULL, NULL, 'active', '2024-04-23');
+
+INSERT INTO `user` (`fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) 
+VALUES ('Bethlehem Tamrat', 'stud1', '0977012635', 'Female', 'stud1', 'avatar4.png', 'Student', 'NaSc 2910/13', 'No', 'College of Engineering', 'active', '2024-04-23');
+
+
+INSERT INTO `user` (`fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) 
+VALUES ('Milkesa Tesfaye', 'stud5', '0977012655', 'Male', 'stud5', 'avatar4.png', 'Student', 'NaSc 3916/13', 'No', 'College of educational and behavioral science', 'active', '2024-04-23');
+
+
+INSERT INTO `user` (`fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) 
+VALUES ('Yared Birhanu', 'ashu', '0977112655', 'Male', 'ashu', 'avatar4.png', 'College_Register', NULL, NULL, NULL, 'active', '2024-04-23');
+
+
+INSERT INTO `user` (`fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) 
+VALUES ('Natinael Kebede', 'regis', '0988112655', 'Male', 'regis', 'avatar4.png', 'University_Registerar', NULL, NULL, NULL, 'active', '2024-04-23');
+
+INSERT INTO `user` (`fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) 
+VALUES ('Shikur Seid', 'admin', '0988112655', 'Male', 'admin', 'avatar4.png', 'admin', NULL, NULL, NULL, 'active', '2024-04-23');
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<?php 
+include 'include/header.php';
+include '../db/database.php';
+require('../include/session.php');
+include '../include/function.php';
+
+?>
+<?php
+$demo = "not working";
+
+if (isset($_POST['login'])) {
+  echo  $userName = $_POST['userName'];
+  echo $password = $_POST['password'];
+
+  $result = mysqli_query($conn, "SELECT `id`, `userName`,`college`,  `password`,`userPhoto`,  `role`, `status` FROM `user` WHERE userName = '$userName' AND password='$password' AND `status`= 'active'");
+
+  // $result = mysqli_query($conn, $sql);
+
+  if ($result) {
+    $numrows = mysqli_num_rows($result);
+    if ($numrows == 1) {
+      //store the result to a array and passed to variable found_user
+      while ($row = mysqli_fetch_assoc($result)) {
+        // $found_user  = mysqli_fetch_array($result);
+
+        //fill the result to session variable
+        $_SESSION['id']  = $row['id'];
+        $_SESSION['userName'] = $row['userName'];
+        $_SESSION['userPhoto'] = $row['userPhoto'];
+        $role  =  $row['role'];
+        $_SESSION['college']  = $row['college'];
+        $college =  $row['college'];
+        // $_SESSION['status'] =
+      }
+      if ($college == "Fresh Man") {
+        header("location:../FreshManRegister/index.php");
+      }
+      if ($role == "College_Register" && $college !== 'Fresh Man') {
+        // $_SESSION['college']  = $row['college'];
+        header("location:../dataAnalyst/index.php");
+      } else if ($role == "Inland_Revenue") {
+        header("location:../inlandRevenue/index.php");
+      } else if ($role == "Student") {
+        header("location:../student/index.php");
+      } else if ($role == "University_Registerar") {
+        header("location:../universityRegister/index.php");
+    } else if ($role == "admin") {
+        header("location:../systemAdmin/index.php");
+      }
+    } else {
+      //IF theres no result
+?> <script type="text/javascript">
+alert("Username or Password Not Correct/Registered! Contact Your administrator.");
+window.location = "login.php";
+</script>
+<?php
+
+    }
+  }
+}
+
+?>
+<body>
+    <header id="header" class="fixed-top" style="background-color: #ffffff;">
+        <div class="container d-flex align-items-center" >
+
+            <a href="login.php" class="img-fluid"></a>
+
+            <h3 class="text-dark"><h3><b></b></h3>
+            <nav class="nav-menu  d-lg-block ml-auto">
+
+                <ul>
+                    <li style="color: #000000;"><a href="login.php"><b>Home</b></a></li>
+                    <li><a href="about.php"><b>About</b></a></li>
+                    <li><a href="contact.php" class="btn-get-started"><b>Contact US</b></a></li>
+                </ul>
+            </nav><!--nav-menu-->
+
+        </div>
+        
+
+    </header><!-- End Header -->
+ <section id="hero" class="d-flex justify-content-center align-items-center" style="background-image: url('../images/haw.jpg'); background-size: cover; background-repeat: no-repeat;">
+    <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
+        <div class="col-md-6 logi" style="margin: 0 auto; text-align: center;">
+            <div class="card bg-transparent text-center card-form" style="background-color: rgba(255, 255, 255, 0.3); border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);">
+                <div class="card-body" style="background-color: rgba(4, 146, 194, 0.9); color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                    <h2 class="mb-4">Welcome to the Login Page</h2>
+                    <p class="mb-4">Please fill out the form below to log in.</p>
+                    <form action="" method="post">
+                        <fieldset style="width: 90%; margin: 0 auto;">
+                            <legend style="color: #fff; font-size: 20px;"><b>Login</b></legend>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="userName" placeholder="Username" autocomplete="off" style="background-color: rgba(255, 255, 255, 0.8);">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" placeholder="Password" style="background-color: rgba(255, 255, 255, 0.8);">
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="remember">
+                                <label class="form-check-label" for="remember" style="color: #fff;">Remember Me</label>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" type="submit" name="login">Login</button>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-secondary btn-block" type="reset" name="reset">Clear</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+    <section id="about" class="about">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+            <div id="Haw" class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="1000">
+    <div style="border-radius: 50%; overflow: hidden;">
+        <img src="../images/HAWASSA_side.jpg" style="border-radius: 5px;" class="img-fluid" alt="">
+    </div>
+</div>
+                <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
+                    <h4><b>Online Cost Sharing Management System</b></h4>
+                    <ul>
+                        <li><i class="fa fa-check-circle"></i> Fill cost-sharing documents online </li>
+                             <li>
+                                <i class="fa fa-check-circle"></i> Get notified instantly about trending news on cost-sharing</li>
+                        <li><i class="fa fa-check-circle"></i> Get notifcation message when your student copy is ready from anywhere </li>
+                    </ul>
+                   
+
+                </div>
+            </div>
+
+        </div>
+    </section><!-- End About Section2 -->
+    <section id="about" class="about">
+        <div class="container" data-aos="fade-up">
+            <div class="row justify-content-center">
+                <!-- Latest Posts section -->
+                <div class="col-lg-12 pt-4 pt-lg-0 order-2 order-lg-1 content">
+                    <h2 style="text-decoration:underline;" class="py-1 text-center"><b>Latest Posts</b></h2>
+                    <!-- News items grid -->
+                    <div id="newsGrid" class="row justify-content-center">
+                        <?php
+                            // Fetching news from the database
+                            $sql = mysqli_query($conn, "SELECT * FROM news ORDER BY `date` DESC");
+                            $counter = 0; // Counter to keep track of news items
+                            while ($row = mysqli_fetch_assoc($sql)) {
+                                $id = $row['id'];
+                                $date = $row['date'];
+                                $title = $row['title'];
+                                $subtitle = $row['subtitle'];
+                                $message = $row['message'];
+                                $user_id = $row['user_id'];
+                                $date1 = new DateTime($date);
+                                $result = $date1->format('Y-m-d H:i:s');
+                                
+                                // Display news items vertically after 500px height
+                                if ($counter == 3) {
+                                    echo '</div><div id="additionalNews" class="row justify-content-center d-none">';
+                                }
+                        ?>
+                                <!-- News item -->
+                                <div class="p-2 m-2 col-lg-3" style="border:1px solid; border-radius: 5px;">
+                                    <div class="timeline-item">
+                                        <p class="time" style="font-size:0.8rem; "> <?php echo $result; ?>  <span style=" text-color:#e6b400; font-size:0.8rem; margin-left:2rem;" class="time">
+                <i class="fas fa-clock"></i> <?php echo timePosted($date); ?>
+            </span>  </p>
+                                        
+                                        <span class="timeline-header pt-2">
+                                        <h4 class="text-center pb-3" style="border-bottom:1px grey solid;"><?php echo htmlentities($title) ?></h4>
+                <h5 class="text-center"><?php echo htmlentities($subtitle)?></h5>
+                                        </span>
+                                        <div class="timeline-body">
+                                            <p class="text-center"><?php echo htmlentities($message) ?></p>
+                                        </div>
+                                        
+                                    </div>
+                                   
+                                </div>
+                        <?php
+                                $counter++;
+                            } 
+                        ?>
+                    </div><!-- End News items grid -->
+                    <?php
+                        // If there are more than three news items, show "See More" button
+                        if ($counter > 3) {
+                            echo '<div class="col-12 text-center my-3"><button id="seeMoreBtn" class="btn btn-primary">See More</button></div>';
+                        }
+                    ?>
+                </div><!-- End Latest Posts section -->
+            </div><!-- End row -->
+        </div><!-- End container -->
+    </section><!-- End About Section -->
+    <?php include '../include/footer.php' ?>
+    <script>
+        // Function to toggle visibility of additional news items and change button text
+        document.getElementById("seeMoreBtn").addEventListener("click", function() {
+            document.getElementById("additionalNews").classList.toggle("d-none");
+            var btnText = document.getElementById("seeMoreBtn").textContent;
+            document.getElementById("seeMoreBtn").textContent = btnText === "See More" ? "See Less" : "See More";
+            // Scroll to the "See More" button after toggling visibility
+            document.getElementById("seeMoreBtn").scrollIntoView();
+        });
+    </script>
+ 
+
+
+</body>
+</html>

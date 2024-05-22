@@ -22,7 +22,7 @@
         // Check the selected recipient and insert the notice accordingly
         switch ($send_to) {
             case 'University_Registerar':
-                $sql = mysqli_query($conn, "INSERT INTO `notice` (`user_id`, `send_to`, `title`, `message`, `date`) VALUES ('$user_id', 'Data_Analyst', '$title', '$message', '$date')");
+                $sql = mysqli_query($conn, "INSERT INTO `notice` (`user_id`, `send_to`, `title`, `message`, `date`) VALUES ('$user_id', 'University_Registerar', '$title', '$message', '$date')");
                 break;
             case 'Revenue_Officer':
                 $sql = mysqli_query($conn, "INSERT INTO `notice` (`user_id`, `send_to`, `title`, `message`, `date`) VALUES ('$user_id', 'Revenue_Officer', '$title', '$message', '$date')");
@@ -101,9 +101,9 @@
                                     <div class="form-group">
                                         <label for="send_to">Notice For</label>
                                         <select name="send_to" id="send_to" class="custom-select">
-                                        <option value="University_Registrar">University Registrar</option>
-                                        <option value="Student">Student</option>
+                                        <option value="University_Registerar">University Registerar</option>
                                         <option value="Revenue_Officer">Revenue Officer</option>
+                                        <option value="Student">Student</option>
                                         </select>
                                     </div>
 
@@ -127,7 +127,7 @@
 $sql = mysqli_query($conn, "SELECT notice.id AS id, notice.date AS date, notice.user_id AS user_id, notice.title AS title, notice.send_to AS send_to,  notice.message AS message, user.fullName AS full_name 
                              FROM notice 
                              INNER JOIN user ON notice.user_id = user.id 
-                             WHERE  notice.send_to = 'Data_Analyst' 
+                             WHERE user_id = '$user_id' OR  notice.send_to = 'Data_Analyst' 
                              ORDER BY `date` DESC");
                     while ($row = mysqli_fetch_assoc($sql)) {
 

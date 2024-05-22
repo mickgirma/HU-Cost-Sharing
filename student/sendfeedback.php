@@ -1,21 +1,36 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="en">
-<?php include '../include/header.php' ?>
-<?php include '../db/database.php' ?>
-<?php include '../include/session.php' ?>
-<?php include '../include/function.php' ?>
-<?php
-//login confirmation
-confirm_logged_in();
-?>
+<?php 
+include '../include/header.php';
+include '../db/database.php';
+include '../include/session.php';
+include '../include/function.php';
 
+// Login confirmation
+confirm_logged_in();
+
+// Retrieve user ID from session
+$user_id = $_SESSION['id'];
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $title = $_POST['title'];
+    $message = $_POST['message'];
+    $date = $_POST['date']; // Assuming you're passing the current date from the form
+    
+    // Insert feedback into database
+    $sql = "INSERT INTO feedback (user_id, title, message, date) VALUES ('$user_id', '$title', '$message', '$date')";
+    
+    if (mysqli_query($conn, $sql)) {
+        echo "<script>alert('Feedback sent successfully');</script>";
+    } else {
+        echo "<script>alert('Error: " . mysqli_error($conn) . "');</script>";
+    }
+}
+?>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-
         <!-- Navbar -->
         <?php include 'include/navbar.php' ?>
         <!-- /.navbar -->
@@ -30,7 +45,7 @@ confirm_logged_in();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Send FeedBack</h1>
+                            <h1 class="m-0 text-dark">Send Feedback</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -40,8 +55,7 @@ confirm_logged_in();
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
+            </div><!-- /.content-header -->
 
             <!-- Main content -->
             <div class="content">
@@ -49,14 +63,13 @@ confirm_logged_in();
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-4">
-                            <form action="sendfeedback.php" method="post">
+                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                                 <input type="hidden" name="date" value="<?php echo date('Y-m-d H:i:s'); ?>">
                                 <div class="form-group">
                                     <label>Title</label>
                                     <input type="text" name="title" class="form-control" placeholder="Enter title name"
                                         minlength="3" title="enter title" required>
                                 </div>
-
 
                                 <div class="form-group">
                                     <label>Feedback Message</label>
@@ -66,75 +79,16 @@ confirm_logged_in();
                                 <button type="submit" name="send" class="btn btn-block btn-primary">Send</button>
                             </form>
                         </div>
-                        <div class="col-md-7">
-                            <!-- The time line -->
-                            <div class="timeline">
-                            
-
-                                <!-- timeline time label -->
-                                <div class="time-label">
-                                    <span class="bg-red"></span>
-                                </div>
-                                <!-- /.timeline-label -->
-                                <!-- timeline item -->
-                                <div>
-                                    <i class="fas fa-envelope bg-blue"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fas fa-clock"></i>
-                                            </span>
-
-                                        <h3 class="timeline-header"><a href="#"></a>
-                                            </h3>
-
-                                        <div class="timeline-body">
-                                            
-                                        </div>
-                                        <div class="timeline-footer">
-                                            <a class="btn btn-danger btn-sm"
-                                                href="sendfeedback.php?id=<?php echo $id ?>&action=delete"
-                                                onClick="return confirm('Are you sure you want to Delete?')"><i
-                                                    class="far fa-trash-alt"></i> delete</a>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                              
-                                <!-- END timeline item -->
-                                <div>
-                                    <i class="fas fa-clock bg-gray"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- /.row -->
+                    </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content -->
-        </div>
-        <!-- /.content-wrapper -->
-
-        <!-- Control Sidebar -->
-        <!-- Control sidebar content goes here -->
-        <!-- <aside class="control-sidebar control-sidebar-dark">
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Sidebar content</p>
-            </div>
-        </aside> -->
-        <!-- /.control-sidebar -->
+            </div><!-- /.content -->
+        </div><!-- /.content-wrapper -->
 
         <!-- Main Footer -->
         <?php include 'include/footer.php' ?>
-    </div>
-    <!-- ./wrapper -->
+    </div><!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->
-
-
-    <?php
-  include '../include/script.php' ?>
+    <?php include '../include/script.php' ?>
 </body>
-
 </html>

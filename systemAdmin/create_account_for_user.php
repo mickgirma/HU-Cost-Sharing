@@ -19,73 +19,56 @@ if (isset($_POST['register'])) {
   $userName  = escape($_POST['userName']);
   $phoneNumber  = escape($_POST['phoneNumber']);
   $password  = escape($_POST['password']);
-  $encreptedpassword =md5($password);
+  $dateOfBirth  = escape($_POST['dateOfBirth']);
+  $college  = escape($_POST['collegeName']);
+  $hashedPassword = password_hash($password, PASSWORD_ARGON2I); 
+  
   $studentId = "no";
 
-  // check if Student ID is empty
-
-  if (isset($_POST['studentId']) && empty($_POST['studentId'])) {
-
-    $studentId = "";
-  } else if (isset($_POST['studentId']) && $_POST['studentId'] !== "") {
-
-    $studentId  = $_POST['studentId'];
-  } else {
-    $studentId = "";
+  // Check if Student ID is provided
+  if (isset($_POST['studentId']) && !empty($_POST['studentId'])) {
+    $studentId = $_POST['studentId'];
   }
 
-  // check if college is empty
-  if (isset($_POST['college']) && empty($_POST['college'])) {
-
-    $college = "";
-  } else if (isset($_POST['college']) && $_POST['college'] !== "") {
-
-    $college  = $_POST['college'];
-  } else {
-    $college = "";
+  // Check if college is provided
+  if (isset($_POST['college']) && !empty($_POST['college'])) {
+    $college = $_POST['college'];
   }
-  // check if college is empty
-  if (isset($_POST['FreshStudent']) && empty($_POST['FreshStudent'])) {
 
-    $FreshStudent = "";
-  } else if (isset($_POST['FreshStudent']) && $_POST['FreshStudent'] !== "") {
-
-    $FreshStudent  = $_POST['FreshStudent'];
-  } else {
-    $FreshStudent = "";
+  // Check if Fresh Student status is provided
+  if (isset($_POST['FreshStudent']) && !empty($_POST['FreshStudent'])) {
+    $FreshStudent = $_POST['FreshStudent'];
   }
+
   $Gender  = escape($_POST['Gender']);
-
-
   $userPhoto  = $_FILES['userPhoto']['name'];
-
   $role  = escape($_POST['role']);
   $fileExt = explode('.', $userPhoto);
   $fileActExt = strtolower(end($fileExt));
   $allowImg = array('png', 'jpeg', 'jpg');
-  $fileNew = rand() . "$userName" . "." . $fileActExt;  // rand function create the rand number
+  $fileNew = rand() . "$userName" . "." . $fileActExt;  
   $coverImage = '../images/' . $fileNew;
-  // check if username already taken
+
+  // Check if username already exists
   $select_username = "SELECT  `userName` FROM `user` WHERE userName= '$userName'";
   $select_username = mysqli_query($conn, $select_username);
   if (mysqli_num_rows($select_username) > 0) {
-    $userNameError = "Sorry... Username already taken. Try another  again one ";
-  } else {;
+    $userNameError = "Sorry username already taken. Try again with unique username.";
+  } else {
+    // Upload user photo
     $target = "../images/" . basename($userPhoto);
     if (move_uploaded_file($_FILES['userPhoto']['tmp_name'], $coverImage)) {
-      //    echo $msg1 = "Image uploaded successfully";
-    } else {
-      //   echo  $msg1 = "Failed to upload image"; validation
+      // Image uploaded successfully
     }
-    // execute if no error
-    $sql = mysqli_query($conn, "INSERT INTO `user`(`fullName`, `userName`,`phoneNumber`,`Gender`, `password`, `userPhoto`, `role`,`studentId`,`FreshStudent`,`college`)
-  VALUES ('$fullName','$userName','$phoneNumber','$Gender','$encreptedpassword','$coverImage','$role','$studentId','$FreshStudent','$college')");
+    
+    // Insert user data into database
+    $sql = mysqli_query($conn, "INSERT INTO `user`(`fullName`, `userName`,`phoneNumber`,`Gender`, `password`, `userPhoto`, `role`,`studentId`,`FreshStudent`,`college`,`DOB`)
+  VALUES ('$fullName','$userName','$phoneNumber','$Gender','$hashedPassword','$coverImage','$role','$studentId','$FreshStudent','$college','$dateOfBirth')");
     if ($sql) {
-
       $msg = "Account Created Successfully";
     } else {
       $msgClass = "alert-danger";
-      $msg = "Can't Creat this user";
+      $msg = "Can't Create account";
     }
   }
 }
@@ -115,7 +98,7 @@ if (isset($_POST['register'])) {
                 <div class="container-fluid">
 
                     <?php if ($msg != '') : ?>
-                    <div class="alert <?php echo $msgClass ?> text-center h1">
+                    <div class="alert <?php echo $msgClass ?> text-center text-success h1">
                         <?php echo $msg ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -125,11 +108,11 @@ if (isset($_POST['register'])) {
                     <form action="" method="POST" enctype="multipart/form-data" class="was-validated">
 
                         <div class="card text-dark bg-light shadow p-3 mt-5 mb-5 bg-white rounded">
-                            <div class="card-header"> <Strong>Create Account For Users </Strong></div>
+                            <h4 class="card-header"> <Strong>Create Account For Users </Strong></h4>
                             <div class="card-body">
                                 <h5 class="card-title"></h5>
 
-                                <?php echo  $userNameError; ?>
+                                <i class="fa fa-icon-alert" ><span class="text-red"><?php echo  $userNameError; ?></span></i>
                                 <div class="row">
 
 
@@ -142,9 +125,7 @@ if (isset($_POST['register'])) {
                                                 <label for="userPhoto">User Image</label>
                                                 <input type="file" name="userPhoto" class="form-control-file"
                                                     id="userPhoto" accept="image/*" onchange="preview_image(event)">
-                                                <img class="img-thumbnail" id="output_image" style="border-radius: 50%;
-        height: auto;
-        max-width: 50%;" />
+                                                <img class="img-thumbnail" id="output_image" style="border-radius: 50%; height: auto; max-width: 50%;" />
                                             </div>
                                         </form>
 
@@ -157,7 +138,7 @@ if (isset($_POST['register'])) {
                                                 id="fullName" value="<?php if (isset($_POST['fullName'])) {
                                                                                                               echo $_POST['fullName'];
                                                                                                             } ?>"
-                                                pattern=".([A-zÀ-ž\s]){5,40}" title="6 to 30 characters" required>
+                                                pattern=".([A-zÀ-ž\s]){2,40}" title="6 to 30 characters" required>
                                             <div class="invalid-feedback">
                                                 Please enter a Full Name.
                                             </div>
@@ -194,33 +175,51 @@ if (isset($_POST['register'])) {
                                             </select>
 
                                         </div>
-
+                                       
+                                        
+                                        
                                         <div class="form-group">
-                                            <label for="role">Role</label>
-                                            <select name="role" id="role" class="custom-select">
-                                                <option value="">Select</option>
-                                                <option value="College_Register">College Register </option>
-                                                <option value="Inland_Revenue">Inland Revenue </option>
-
-                                                <option value="Student">Student </option>
-
-                                            </select>
-
+                                          <label for="role">Role</label>
+                                          <select name="role" id="role" class="custom-select">
+                                            <option value="">Select</option>
+                                            <option value="College_Register">Data Analyst</option>
+                                            <option value="Inland_Revenue">Inland Revenue </option>
+                                            <option value="University_Registerar">University Registerar </option>
+                                            <option value="admin">System Admin</option>
+                                            <option value="Student">Student </option>
+                                            
+                                          </select>
+                                          
                                         </div>
                                         <div id="demo"></div>
+                                       
+                                        
+
+                                        <div class="form-group">
+                                                <label for="costDepartement">College</label>
+                                                <select name="collegeName" id="costDepartement"
+                                                    class="form-control custom-select">
+                                                    <option value="">Select Category</option>
+                                                    <?php
+                          $result = mysqli_query($conn, "SELECT * FROM subcategory where 1");
+                          while ($row = mysqli_fetch_array($result)) {
+                          ?>
+                                                    <option value="<?php echo $row["subcategoryName"]; ?>"><?php echo $row["subcategoryName"]; ?></option>
+                                                    <?php
+                          }
+                          ?>
+                                                </select>
+                                            </div>
 
 
                                         <div class="form-group">
                                             <label for="username">Username</label>
                                             
-                                            <!--<input type="text" name="userName" class="form-control is-valid"
+                                            <input type="text" name="userName" class="form-control is-valid"
 
-                                                id="fullName" pattern=".([A-zÀ-ž0-9]){4,10}" title="5 to 10 characters"
-                                                required>-->
-                                                <input type="text" name="userName" class="form-control is-valid"
-                                              id="fullName" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,10}$"
-                                                title="Must contain at least one uppercase letter, one lowercase letter, and one number. Length: 5 to 10 characters."
-                                              required>
+                                                id="fullName" pattern=".([A-zÀ-ž0-9]){3,10}" title="3 to 10 characters" placeholder="Enter 3 to 10 characters"
+                                                required>
+                                               
                                         
 
                                             <div class="invalid-feedback">
@@ -228,12 +227,17 @@ if (isset($_POST['register'])) {
                                             </div>
 
                                         </div>
+                                        <div class="form-group">
+                                        <label for="dateOfBirth">Date of Birth</label>
+                                        <input type="date" name="dateOfBirth" class="form-control" id="dateOfBirth" required>
+                                        <div class="invalid-feedback">
+                                            Please enter your date of birth.
+                                        </div>
+                                    </div>
 
                                         <div class="form-group">
                                             <label for="">Password</label>
-                                            <!--<input type="password" class="form-control is-valid" name="password"
-                                                pattern=".([A-zÀ-ž0-9]){4,10}" title="8 to 15 characters & numbers"
-                                                required>-->
+                                           
                                                 <input type="password" class="form-control is-valid" name="password"
                                                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$"
                                                   title="Must contain at least one uppercase letter, one lowercase letter, and one number ,Minimum length: 6 characters"
@@ -301,6 +305,31 @@ if (isset($_POST['register'])) {
         });
     });
     </script>
+    <script>
+$(document).ready(function() {
+    $('#role').on('change', function() {
+        var role = $(this).val();
+        if (role === 'Student') {
+            $('#collegeField').show();
+        } else {
+            $('#collegeField').hide();
+        }
+    });
+});
+</script>
+<script>
+    $(document).ready(function() {
+        $('#role').on('change', function() {
+            var role = $(this).val();
+            if (role === 'Student') {
+                $('#demo').show();
+            } else {
+                $('#demo').hide();
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>

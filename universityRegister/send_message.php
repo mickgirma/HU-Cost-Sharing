@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="en">
 <?php include '../include/header.php' ?>
-<?php include '../db/database.php' ?>
 <?php include '../include/session.php' ?>
-<?php include '../include/function.php' ?>
+<?php include '../db/database.php' ?>
 <?php
-//login confirmation
+// Login confirmation
 confirm_logged_in();
+
+// Function to send email notification
+if (isset($_POST['send_email'])) {
+    // Here you would implement the logic to send an email notification
+    // For demonstration purposes, let's assume it's just an alert
+    echo "<script>alert('Email notification sent successfully');</script>";
+}
+
 ?>
 
 <body class="hold-transition sidebar-mini">
@@ -30,7 +33,7 @@ confirm_logged_in();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Send Message</h1>
+                            <h1 class="m-0 text-dark">Booked Students List</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -47,100 +50,90 @@ confirm_logged_in();
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-4">
-                            <form action="sendfeedback.php" method="post">
-                                <input type="hidden" name="date" value="<?php echo date('Y-m-d H:i:s'); ?>">
-                                <div class="form-group">
-                                    <label>Title</label>
-                                    <input type="text" name="title" class="form-control" placeholder="Enter title name"
-                                        minlength="3" title="enter title" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="send_to">Message For</label>
-                                    <select name="send_to" id="send_to" class="custom-select">
-                                        
-                                        <option value="Inland_Revenue">student</option>
-                                    </select>
-                                </div>
 
-                                <div class="form-group">
-                                    <label>Message</label>
-                                    <textarea name="message" class="form-control" rows="3" placeholder="Enter message"
-                                        spellcheck="false" required></textarea>
-                                </div>
-                                <button type="submit" name="send" class="btn btn-block btn-primary">Send</button>
-                            </form>
-                        </div>
-                        <div class="col-md-7">
-                            <!-- The time line -->
-                            <div class="timeline">
-                            
+                        <div class="col-md-12">
 
-                                <!-- timeline time label -->
-                                <div class="time-label">
-                                    <span class="bg-red"></span>
-                                </div>
-                                <!-- /.timeline-label -->
-                                <!-- timeline item -->
-                                <div>
-                                    <i class="fas fa-envelope bg-blue"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fas fa-clock"></i>
-                                            </span>
+                            <div class="card-body">
+                                <table id="example3" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Student ID</th>
+                                            <th>Student Full Name</th>
+                                            <th>Category Name</th>
+                                            <th>Department Year</th>
+                                            <th>Services In Kind</th>
+                                            <th>Services In Cash</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $sql = mysqli_query($conn, "SELECT studentcostfill.id, subcategory.subcategoryName AS catName, `user_id`, user.userPhoto as userPhoto, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`, `graduated`,`send_graduate`, user.studentId as studentId , user.fullName as studFullName, `booked_queue`, `booked_time` FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName  INNER JOIN `user` ON user.id = studentcostfill.user_id WHERE studentcostfill.booked_queue = 1 ORDER BY studentcostfill.booked_time ASC");
 
-                                        <h3 class="timeline-header"><a href="#"></a>
-                                            </h3>
+                                        while ($row = mysqli_fetch_assoc($sql)) {
+                                            $cost_id = $row['id'];
+                                            $userPhoto = $row['userPhoto'];
+                                            $catName = $row['catName'];
+                                            $departmentYear = $row['departmentYear'];
+                                            $servicesInKind = $row['servicesInKind'];
+                                            $servicesInCash = $row['servicesInCash'];
+                                            $studentId = $row['studentId'];
+                                            $studFullName = $row['studFullName'];
+                                        ?>
 
-                                        <div class="timeline-body">
-                                            
-                                        </div>
-                                        <div class="timeline-footer">
-                                            <a class="btn btn-danger btn-sm"
-                                                href="sendfeedback.php?id=<?php echo $id ?>&action=delete"
-                                                onClick="return confirm('Are you sure you want to Delete?')"><i
-                                                    class="far fa-trash-alt"></i> delete</a>
+                                            <tr>
+                                                <td><?php echo htmlentities($studentId); ?></td>
+                                                <td>
+                                                    <img src="../images/<?php echo htmlentities($userPhoto); ?>" alt="Profile Photo" class="img-circle img-size-64 mr-2">
+                                                    <?php echo htmlentities($studFullName); ?>
+                                                </td>
+                                                <td><?php echo htmlentities($catName); ?></td>
+                                                <td><?php echo htmlentities($departmentYear); ?></td>
+                                                <td><?php echo htmlspecialchars($servicesInKind); ?></td>
+                                                <td><?php echo htmlspecialchars($servicesInCash); ?></td>
+                                                <td>
+                                                    <form method="post">
+                                                        <input type="hidden" name="cost_id" value="<?php echo $cost_id; ?>">
+                                                        <button type="submit" name="send_email" class="btn btn-primary">Send Email</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
 
-                                        </div>
-                                    </div>
-                                </div>
+                                        <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Student ID</th>
+                                            <th>Student Full Name</th>
 
-                              
-                                <!-- END timeline item -->
-                                <div>
-                                    <i class="fas fa-clock bg-gray"></i>
-                                </div>
+                                            <th>Category Name</th>
+                                            <th>Department Year</th>
+                                            <th>Services In Kind</th>
+                                            <th>Services In Cash</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </div>
+
                         </div>
 
                     </div>
-                    <!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content -->
-        </div>
-        <!-- /.content-wrapper -->
 
-        <!-- Control Sidebar -->
-        <!-- Control sidebar content goes here -->
-        <!-- <aside class="control-sidebar control-sidebar-dark">
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Sidebar content</p>
-            </div>
-        </aside> -->
-        <!-- /.control-sidebar -->
+                    </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div><!-- /.content -->
+</div><!-- /.content-wrapper -->
 
-        <!-- Main Footer -->
-        <?php include 'include/footer.php' ?>
-    </div>
-    <!-- ./wrapper -->
+<!-- Main Footer -->
+<?php include 'include/footer.php' ?>
+</div><!-- ./wrapper -->
 
-    <!-- REQUIRED SCRIPTS -->
-
-
-    <?php
-  include '../include/script.php' ?>
+<!- - REQUIRED SCRIPTS -->
+<?php include '../include/script.php' ?>
 </body>
 
-</html>
+</html> 

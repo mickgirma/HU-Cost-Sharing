@@ -19,8 +19,12 @@
                 </div>
                 <div class="carousel-item">
                     <img class="d-block w-100" src="../photo2.jpg" alt="Second slide">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h3>Slide Three</h3>
+                    <div class="carousel-caption d-none d-sm-block text-right mb-5">
+                        <h1 class="display-3">HAWASSA UNIVERSITY</h1>
+                        <p class="lead">Hawassa University is the emerging public higher education institution of
+                            Ethiopia. 
+                        </p>
+
                     </div>
                 </div>
             </div>

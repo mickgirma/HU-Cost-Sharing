@@ -38,7 +38,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="manage_account.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-tasks"></i>
                         <p>
                             Manage Account
                             
@@ -47,7 +47,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="manage_student.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-tasks"></i>
                         <p>
                             Manage Student
 
@@ -55,21 +55,10 @@
                     </a>
                 </li>
                 
-                <li class="nav-item">
-                    <a href="view_student_information.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            View Student Information
-                            <!--  -->
-                        </p>
-                    </a>
-
-                </li>
-            
-                
+        
                 <li class="nav-item">
                     <a href="send_feedback.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-comment"></i>
                         <p>
                             Send Feedback
                             <!--  -->

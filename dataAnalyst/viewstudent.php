@@ -188,7 +188,7 @@ if (isset($_GET['updateyear'])) {
                                             <td>
                                                 <a class="btn btn-primary"
                                                     href="view_student_detail.php?id=<?php echo $user_id ?>"><i
-                                                        class="fas fa-pencil-alt mr-2"></i> View</a>
+                                                        class="fas fa-eye alt mr-2"></i> View</a>
                                             </td>
                                             <td>
                                                 <?php if ($msgClass) {

@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
+
 <html lang="en">
 <?php include '../include/header.php' ?>
 <?php include '../include/session.php' ?>
@@ -55,9 +52,9 @@ confirm_logged_in();
                                 class="was-validated">
 
 
-                                <div class="card-header">Fedral Democratic Republic Of Ethiopia
+                                <h4 class="card-header">Fedral Democratic Republic Of Ethiopia
                                     Higher Education Cost Sharing Regulation
-                                    Beneficiaries Agrement Form</div>
+                                    Beneficiaries Agrement Form</h4>
                                 <div class="card-body">
 
 
@@ -74,7 +71,7 @@ confirm_logged_in();
                                                     id="exampleFormControlFile1">
                                             </div>
 
-                                            <h2>Mother Adobter's
+                                            <h2>Mother | Adobter's
                                             </h2>
 
                                             <div class="form-group">
@@ -206,7 +203,7 @@ confirm_logged_in();
                                         </div>
                                         <div class="col-md-6 mb-3">
 
-                                            <h2>University- HAWASSA
+                                            <h2>HU-CSMS
 
 
                                             </h2>
@@ -271,7 +268,7 @@ confirm_logged_in();
                                                 </div>
 
                                             </div>
-                                            <h2>if you have withdraw from the university indicate
+                                            <h2>If you have withdraw from the university indicate
                                                 date of with draw
 
                                             </h2>

@@ -27,7 +27,7 @@ confirm_logged_in();
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">View Graduated Student Information</h1>
+                            <h1 class="m-0 text-dark">View Student Information</h1>
 
                         </div><!-- /.col -->
                         <div class="col-sm-6">

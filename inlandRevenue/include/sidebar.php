@@ -23,34 +23,45 @@
 
                 <li class="nav-item">
                     <a href="send_student_cost.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-paper-plane"></i>
                         <p> Send Student Cost</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="inland_mange_notice.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-envelope"></i>
                         <p>Manage Notice</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="manage_cost_share.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Manage Cost Share</p>
-                    </a>
-                </li>
+               
                 <li class="nav-item">
                     <a href="inland_view_student.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Student Information</p>
+                        <i class="nav-icon fas fa-eye"></i>
+                        <p>View Student Information</p>
                     </a>
 
                 </li>
                 <li class="nav-item">
-                    <a href="sendverification.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Send Verification</p>
+                    <a href="manage_cost_share.php" class="nav-link">
+                        <i class="nav-icon fas fa-sync-alt"></i>
+                        <p>Update Costshare</p>
                     </a>
+                </li>
+                <li class="nav-item">
+                    <a href="sendverification.php" class="nav-link">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <p>Payment Verification</p>
+                    </a>
+
+                    <li class="nav-item">
+                    <a href="send_feedback.php" class="nav-link">
+                        <i class="nav-icon fas fa-comment"></i>
+                        <p>
+                            Send feedback
+                            
+                        </p>
+                    </a>
+                </li>
 
                 </li>
                 <li class="nav-item">

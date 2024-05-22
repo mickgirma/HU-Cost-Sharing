@@ -24,8 +24,8 @@
             case 'Data_Analyst':
                 $sql = mysqli_query($conn, "INSERT INTO `notice` (`user_id`, `send_to`, `title`, `message`, `date`) VALUES ('$user_id', 'Data_Analyst', '$title', '$message', '$date')");
                 break;
-            case 'University_Registrar':
-                $sql = mysqli_query($conn, "INSERT INTO `notice` (`user_id`, `send_to`, `title`, `message`, `date`) VALUES ('$user_id', 'Revenue_Officer', '$title', '$message', '$date')");
+            case 'University_Registerar':
+                $sql = mysqli_query($conn, "INSERT INTO `notice` (`user_id`, `send_to`, `title`, `message`, `date`) VALUES ('$user_id', 'University_Registerar', '$title', '$message', '$date')");
                 break;
             case 'Student':
                 $sql = mysqli_query($conn, "INSERT INTO `notice` (`user_id`, `send_to`, `title`, `message`, `date`) VALUES ('$user_id', 'Student', '$title', '$message', '$date')");
@@ -101,7 +101,7 @@
                                     <div class="form-group">
                                         <label for="send_to">Notice For</label>
                                         <select name="send_to" id="send_to" class="custom-select">
-                                            <option value="University_Registrar">University Registrar</option>
+                                            <option value="University_Registerar">University Registrar</option>
                                         <option value="Data_Analyst">Data Analyst</option>
                                         <option value="Student">Student</option>
                                         </select>
@@ -127,7 +127,7 @@
 $sql = mysqli_query($conn, "SELECT notice.id AS id, notice.date AS date, notice.user_id AS user_id, notice.send_to AS send_to,  notice.title AS title, notice.message AS message, user.fullName AS full_name 
                              FROM notice 
                              INNER JOIN user ON notice.user_id = user.id 
-                             WHERE  notice.send_to = 'Revenue_Officer' 
+                             WHERE user_id = '$user_id'  OR notice.send_to = 'Revenue_Officer' 
                              ORDER BY `date` DESC");
                     while ($row = mysqli_fetch_assoc($sql)) {
 

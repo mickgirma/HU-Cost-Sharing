@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
+
 <html lang="en">
 <?php include '../include/header.php' ?>
 <?php include '../include/session.php' ?>
@@ -11,15 +8,83 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <?php
 //login confirmation
 confirm_logged_in();
-
+$total_cost = 0;
 ?>
 <?php
- $uid = intval($_GET['id']);
-$total_cost = 0;
+$uid = $_SESSION['id'];
+$check_user = mysqli_query($conn, "SELECT * FROM `studentcostfill` WHERE `user_id` = '$uid'");
+$num_row = mysqli_num_rows($check_user);
+if ($num_row == 2) {
+  $uID = '';
+  while ($user_data = mysqli_fetch_assoc($check_user)) {
+    $uID = $user_data['id'];
+  }
+  $update_nomRow1 = mysqli_query($conn, "UPDATE `studentcostfill` SET `numRow1`='yes' WHERE id = '$uID'");
+}
+$id = '';
+$sql = mysqli_query($conn, "SELECT studentcostfill.id AS cost_id, user.id,`user_id` ,subcategory.categoryid as catName,subcategory.subcategoryName as categoryName,user.Gender, user.userPhoto,user.fullName,user.phoneNumber, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`,`cost_dep_name` FROM `studentcostfill` INNER JOIN user ON studentcostfill.user_id = '$uid' INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName WHERE user.id = '$uid'");
+$count_user = mysqli_num_rows($sql);
+if ($count_user > 0) {
+  $final_year = "";
+  while ($cost_data = mysqli_fetch_assoc($sql)) {
+    $final_year = $cost_data['cost_dep_name'];
+  }
+  $find_category = mysqli_query($conn, "SELECT * FROM `subcategory` WHERE `id` = '$final_year'");
+  while ($find_category_row = mysqli_fetch_assoc($find_category)) {
+    $id = $find_category_row['id'];
+  }
+  $graduated = false;
+  // College of computing and informatics
+  if ($id == 1 && $count_user ==5) {
+    $graduated = true;
+  }
+  // College of Engineering
+  if ($id == 2 && $count_user == 6) {
+    $graduated = true;
+  }
+  // College of Computational science
+  if ($id == 3 && $count_user == 6) {
+    $graduated = true;
+  }
+  //College of health
+  if ($id == 10 && $count_user == 5) {
+    $graduated = true;
+  }
+  //College of Agricultural science
+  if ($id == 11 && $count_user == 4) {
+    $graduated = true;
+  }
+  // College of social science and humanity
+  if ($id == 5 && $count_user == 4) {
+    $graduated = true;
+  }
+
+  // College of educational and behavioral science
+  if ($id == 8 && $count_user == 5) {
+    $graduated = true;
+  }
+  //College of school of low
+  if ($id == 9 && $count_user == 5) {
+    $graduated = true;
+  }
+
+  // College of business and economics
+  if ($id == 12 && $count_user == 4) {
+    $graduated = true;
+  }
+  if ($graduated) {
+    $update_status = mysqli_query($conn, "UPDATE `studentcostfill` SET `graduated`='Yes' WHERE `user_id` = '$uid'");
+?>
+<script>
+alert('You Are Graduate');
+</script>
+<?php
+  }
+}
+
 ?>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-
         <!-- Navbar -->
         <?php include 'include/navbar.php' ?>
         <!-- /.navbar -->
@@ -51,6 +116,7 @@ $total_cost = 0;
             <div class="content">
                 <div class="container-fluid">
                     <?php
+
           $_SESSION['total_cost'] = "";
           if ($_SESSION['total_cost'] !== "") {
             echo $_SESSION['total_cost'];
@@ -59,7 +125,25 @@ $total_cost = 0;
                     <div class="row">
 
                         <?php
-            $sql = mysqli_query($conn, "SELECT  studentcostfill.id AS cost_id, user.id AS user_id ,subcategory.categoryid as catName,subcategory.subcategoryName as categoryName,user.Gender,user.date as datee, user.DOB as dob, user.userPhoto,user.fullName,user.phoneNumber, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate` FROM `studentcostfill` INNER JOIN user ON studentcostfill.user_id = '$uid' INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName WHERE user.id = '$uid'");
+            $foodCost = 0;
+            $beddingCost = 0;
+            $bothCost = 0;
+
+
+            $foodCostk = 0;
+            $beddingCostk = 0;
+            $bothCostk = 0;
+            $sql = mysqli_query($conn, "SELECT  studentcostfill.id 
+            AS cost_id, user.id AS user_id ,subcategory.categoryid as
+             catName,subcategory.subcategoryName as categoryName,user.Gender,user.date 
+             as datee,user.DOB as dob, user.userPhoto,user.fullName,user.phoneNumber, `parentFullName`,
+              `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`,
+               `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`,
+                `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`,
+                 `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, 
+                 `servicesInCash`, `withDrawDate` FROM `studentcostfill` INNER JOIN user
+                  ON studentcostfill.user_id = '$uid' INNER JOIN subcategory ON 
+                  subcategory.id = studentcostfill.departmentName WHERE user.id = '$uid'");
             while ($row = mysqli_fetch_assoc($sql)) {
               $cost_id = $row['cost_id'];
               $user_id = $row['user_id'];
@@ -94,7 +178,7 @@ $total_cost = 0;
               $date1 = new DateTime($date);
               $result = $date1->format('Y-m-d H:i:s');
               $dob=$row['dob'];
-              
+
 
             ?>
 
@@ -133,49 +217,50 @@ $total_cost = 0;
                                                 Gender: <?php echo $Gender ?> <br>
                                                 Department Type: <?php echo $departmentType ?> <br>
                                                 Department Name: <?php echo $departmentName ?><br>
-                                                DOB: <?php echo $dob ?>
+                                                Date Of Birth: <?php echo $dob ?>
+
                                             </address>
                                         </div>
                                         <!-- /.col -->
                                         <div style="border:1px solid;" class="col-sm-4 invoice-col">
                                             <h4>Parent Details</h4>
                                             <address>
-                                                Full Name: <strong><?php echo $parentFullName ?></strong><br>
+                                                Full Name:<strong><?php echo $parentFullName ?></strong><br>
                                                 Address : <?php echo $parentCity ?><br>
                                                 Region : <?php echo $parentRegion ?><br>
                                                 Wereda : <?php echo $parentWoreda ?><br>
                                                 Zone : <?php echo $parentZone ?> <br>
-                                                House Number : <?php echo $parentHouseNumber ?>
+                                                House Number :<?php echo $parentHouseNumber ?>
                                             </address>
                                         </div>
                                         <!-- /.col -->
                                         <div style="border:1px solid;" class="col-sm-4 invoice-col">
                                             <h4>Shool Details</h4>
                                             <address>
-                                                School Name: <strong><?php echo $schoolName ?></strong><br>
+                                                School Name:<strong><?php echo $schoolName ?></strong><br>
                                                 Adress : <?php echo $schoolCity ?><br>
                                                 Region : <?php echo $schoolRegion ?><br>
                                                 Wereda : <?php echo $schoolWoreda ?><br>
-                                                Kebele : <?php echo $schoolKebele ?> <br>
-                                                School Completed Date: <?php echo $schoolCompletedDate ?>
+                                                Kebel : <?php echo $schoolKebele ?> <br>
+                                                School Completed Date:<?php echo $schoolCompletedDate ?>
                                             </address>
                                         </div>
                                         <div style="border:1px solid;" class="col-sm-8 invoice-col">
                                             <h4>Department Detail</h4>
                                             <address>
 
-                                                Department Name : <strong><?php echo $depname ?></strong><br>
+                                                Department Name : <?php echo $depname ?><br>
                                                 Department Year : <?php echo $departmentYear ?><br>
                                                 College Start Date : <?php echo $collegeStartDate ?><br>
                                                 Kebel : <?php echo $schoolKebele ?> <br>
-                                                School Completed Date: <?php echo $schoolCompletedDate ?>
+                                                School Completed Date:<?php echo $schoolCompletedDate ?>
                                             </address>
                                         </div>
                                         <div style="border:1px solid;" class="col-sm-4 invoice-col">
                                             <h4>Cost Share Form Detail</h4>
                                             <address>
-                                                Service In Kind : <strong><?php echo $servicesInKind ?></strong><br>
-                                                Service In Cash : <strong> <?php echo $servicesInCash ?></strong><br>
+                                                Service In Kind :<strong><?php echo $servicesInKind ?></strong><br>
+                                                Service In Cash :<strong> <?php echo $servicesInCash ?></strong><br>
 
                                             </address>
 
@@ -188,7 +273,7 @@ $total_cost = 0;
                                     <!-- /.row -->
 
                                     <!-- Table row -->
-                                    <div class="row">
+                                    <div  class="row">
                                         <div class="col-12 table-responsive">
                                             <table class="table table-striped">
                                                 <thead>
@@ -211,10 +296,18 @@ $total_cost = 0;
                             $foodCostk = 0;
                             $beddingCostk = 0;
                             $bothCostk = 0;
-                            $row['servicesInKind'];
-                            $row['servicesInCash'];
+                            echo $row['servicesInKind'];
+                            echo  $row['servicesInCash'];
                             $stat = true;
-                            $subMenu = mysqli_query($conn, "SELECT studentcostfill.id, `user_id`,`beddingExpenseFee`,`foodExpenseFee`, `servicesInKind`,`year`, `tuitionFee`,`servicesInCash`,`departmentType`, `departmentName`, `departmentYear`,`total`,`status` FROM `studentcostfill` INNER JOIN subcategory on subcategory.id = $departmentName INNER JOIN costshareform on costshareform.collegeName = studentcostfill.departmentName WHERE `user_id` = '$uid' && status = 'active' && departmentName = '$departmentName'");
+                            $subMenu = mysqli_query($conn, "SELECT studentcostfill.id, 
+                                    `user_id`,`beddingExpenseFee`,`foodExpenseFee`,  
+                                    `servicesInKind`,`year`, `tuitionFee`,`servicesInCash`,
+                                    `departmentType`, `departmentName`, `departmentYear`,costshareform.year AS yearr,
+                                    `total`,`status` FROM `studentcostfill` INNER JOIN 
+                                    subcategory on subcategory.id = $departmentName INNER JOIN 
+                                    costshareform on 
+                                    costshareform.collegeName = studentcostfill.departmentName 
+                                    WHERE `user_id` = '$uid' AND status = 'active' AND departmentName = '$departmentName'");
 
 
                             while ($data = mysqli_fetch_assoc($subMenu)) {;
@@ -253,17 +346,16 @@ $total_cost = 0;
 
 
 
-                            ?>
-                             <p class="h4">Amount due to <?php echo $data['year'] ?></p>
+                                ?>
+                                <p class="h4 ">Amount due to <?php echo $data['yearr'] ?></p>
                                                     <tr>
-
                                                         <td><?php echo $data['id'] ?></td>
                                                         <td><?php echo $data['departmentName'] ?></td>
                                                         <td><?php echo $data['tuitionFee'] ?></td>
                                                         <td><?php echo $data['foodExpenseFee'] ?></td>
                                                         <td><?php echo $data['beddingExpenseFee'] ?></td>
-                                                        <td><?php echo $data['total'];
-                                      ?></td>
+                                                        <td><?php echo $data['total']?></td>
+
 
                                                         </td>
                                                     </tr>
@@ -289,7 +381,7 @@ $total_cost = 0;
 
                                         <!-- /.col -->
                                         <div class="col-6">
-                                           
+                                        
 
                                             <div class="table-responsive">
                                                 <table class="table">
@@ -299,7 +391,7 @@ $total_cost = 0;
                                                         <tr>
                                                             <th>Total:</th>
 
-                                                            <td><?php echo $each_cost = $bothCost + $beddingCost + $foodCost + $bothCostk + $beddingCostk + $foodCostk + $tuitionFee;
+                                                            <td><?php echo $each_cost = $bothCost + $beddingCost + $foodCost + $bothCostk + $beddingCostk + $foodCostk +$tuitionFee;
                                     $total_cost = $total_cost + $each_cost;
 
                                     ?></td>
@@ -323,7 +415,12 @@ $total_cost = 0;
                     <div class="container pb-5">
                         <div class="col-md-3 col-sm-6 col-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-warning" >  <!--<i class="fas fa-eth-sign"></i><i class="fas fa-dollar-sign">--><p> Birr</p></i></span>
+                                <span class="info-box-icon bg-warning">
+
+
+                                    <!--<i class="fas fa-dollar-sign"></i>-->
+                                        <p>Birr</p>
+                                    </span>
 
                                 <div class="info-box-content">
                                     <span class="info-box-text">Total Cost</span>
@@ -369,4 +466,15 @@ $total_cost = 0;
 
     <?php include '../include/script.php' ?>
 </body>
+
+
+
+
+
+
+
+
+
+
+
 </html>

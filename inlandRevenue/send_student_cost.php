@@ -27,7 +27,7 @@ if (isset($_POST['send'])) {
   $sql = mysqli_query($conn, "INSERT INTO `costshareform`(`collegeName`, `tuitionFee`, `foodExpenseFee`, `beddingExpenseFee`, `userId`,`total`,`year`) VALUES ('$collegeName','$tuitionFee','$foodExpenseFee','$beddingExpenseFee','$userId','$total','$year')");
   if ($sql) {
 
-    $msg = "Cost Share Price Sent Successfully";
+    $msg = "Costshare Price Sent Successfully";
   } else {
     $msgClass = "alert-danger";
     $msg = "Can't Send";
@@ -53,7 +53,7 @@ if (isset($_POST['send'])) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Cost Share Information</h1>
+                            <h1 class="m-0 text-dark">Costshare Information</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -75,7 +75,7 @@ if (isset($_POST['send'])) {
                         <div class="col-md-6">
                             <?php if ($msg != '') : ?>
                             <div class="alert <?php echo $msgClass ?> text-center h4">
-                                <?php echo $msg ?>
+                                <span class="text-success"><?php echo $msg ?> </span>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

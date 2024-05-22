@@ -11,32 +11,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <?php
 //login confirmation
 confirm_logged_in();
-
-
 ?>
 <?php
-$college = $_SESSION['college'];
+$currentUserId = $_SESSION['id'];
 if (isset($_GET['status'])) {
-
-
   echo $id = $_GET['id'];
-  $check_college = mysqli_query($conn, "SELECT costshareform.id, `collegeName`,subcategory.subcategoryName FROM `costshareform` INNER JOIN subcategory on collegeName = subcategory.id WHERE costshareform.id = '$id' AND subcategory.subcategoryName =  '$college'");
-  $college_num_row = mysqli_num_rows($check_college);
-  if ($college_num_row > 0) {
-    mysqli_query($conn, "UPDATE `costshareform` SET `action`= 'accept' WHERE  `id`= '$id'");
-
-    header("location:view_cost_share.php");
-  } else {
-?>
-<script>
-alert('you cannot update status because you are ' + '<?php echo $_SESSION['college'] ?>')
-</script>
-<?php
-
-  }
+  mysqli_query($conn, "UPDATE `costshareform` SET `status`= 'active' WHERE  `id`= '$id'");
+  $_SESSION['delmsg'] = "User Suspend !!";
+  header("location:manage_cost_share.php");
 }
 ?>
-
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
@@ -74,7 +58,8 @@ alert('you cannot update status because you are ' + '<?php echo $_SESSION['colle
                     <div class="row">
 
                         <div class="col-12 table-responsive">
-                            <table class="table table-striped">
+                            <table id="example3" class="table table-bordered table-striped">
+
                                 <h3>Department Name</h3>
                                 <thead>
                                     <tr>
@@ -86,9 +71,8 @@ alert('you cannot update status because you are ' + '<?php echo $_SESSION['colle
                                         <th>Total</th>
                                         <th>year</th>
 
-
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>action</th>
+                                        <th>edit</th>
 
 
                                     </tr>
@@ -96,7 +80,7 @@ alert('you cannot update status because you are ' + '<?php echo $_SESSION['colle
                                 <tbody>
                                     <?php
                   $num = 0;
-                  $sql = mysqli_query($conn, "SELECT costshareform.id,subcategory.subcategoryName AS categoryName, `collegeName`, `tuitionFee`, `foodExpenseFee`, `beddingExpenseFee`, `userId`, `status`,`total`,`action`,`year` FROM `costshareform` INNER JOIN subcategory on subcategory.id = costshareform.collegeName WHERE status = 'active'");
+                  $sql = mysqli_query($conn, "SELECT costshareform.id, `collegeName`,subcategory.subcategoryName as categoryName ,`tuitionFee`, `foodExpenseFee`, `beddingExpenseFee`, `userId`, `total`, `status`,`action`,`year` FROM `costshareform` INNER JOIN subcategory on collegeName = subcategory.id WHERE userId = '$currentUserId'");
                   while ($row = mysqli_fetch_assoc($sql)) {
                     $id = $row['id'];
                     $collegeName = $row['categoryName'];
@@ -104,15 +88,18 @@ alert('you cannot update status because you are ' + '<?php echo $_SESSION['colle
                     $foodExpenseFee = $row['foodExpenseFee'];
                     $beddingExpenseFee = $row['beddingExpenseFee'];
                     $status = $row['status'];
+                    $action = $row['action'];
                     $year = $row['year'];
 
-                    $action = $row['action'];
                     $total = $tuitionFee + $foodExpenseFee + $beddingExpenseFee;
                     $num++;
                     if ($status == 'active') {
                       $btnColor = 'btn btn-primary btn-xs btn-disable';
+
+                      $edit = 'd-none';
                     } else {
                       $btnColor = 'btn btn-danger btn-xs btn-disable';
+                      $edit = "";
                     }
                   ?>
 
@@ -127,20 +114,34 @@ alert('you cannot update status because you are ' + '<?php echo $_SESSION['colle
 
                                         <td><button class="<?php echo htmlentities($btnColor) ?>">
                                                 <?php echo htmlentities($status) ?></button></td>
-                                        <td> <a href="view_cost_share.php?id=<?php echo $id ?>&status=active"
-                                                onClick="return confirm('Are you sure you want to Active this Cost Share?')"><?php echo htmlspecialchars($action) ?>&nbsp;
-                                                <i class="far fa-check-circle"></i></a></td>
+
+                                        <td> <a href="edit_cost_share.php?id=<?php echo $id ?>"
+                                                class="<?php echo $edit ?>">Edit</a>
+                                        </td>
 
                                     </tr>
                                     <?php
                   }
 
                   ?>
-
-
-
-
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Num</th>
+                                        <th>Name</th>
+                                        <th> tuitionFee(Birr)</th>
+                                        <th> foodExpenseFee(Birr)</th>
+                                        <th> beddingExpenseFee(Birr)</th>
+                                        <th>Total</th>
+                                        <th>year</th>
+
+                                        <th>action</th>
+                                        <th>edit</th>
+
+
+
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                         <!-- /.col -->

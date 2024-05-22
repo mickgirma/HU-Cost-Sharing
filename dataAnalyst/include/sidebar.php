@@ -26,7 +26,7 @@
 
                 <li class="nav-item">
                     <a href="send_feedback.php" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-comment"></i>
                         <p>
                             Send feedback
                             
@@ -34,7 +34,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="viewstudent.php" class="nav-link">
+                    <a href="viewStudentInformation.php" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             view Student Information
@@ -45,7 +45,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="managenotice.php" class="nav-link">
-                        <i class="nav-icon far fa-comment"></i>
+                        <i class="nav-icon fas fa-envelope"></i>
                         <p>
                             Manage Notice
                             <!--  -->
@@ -54,8 +54,8 @@
 
                 </li>
                 <li class="nav-item">
-                    <a href="manage_costshare.php" class="nav-link">
-                        <i class="nav-icon far fa-comment"></i>
+                    <a href="view_cost_share.php" class="nav-link">
+                        <i class="nav-icon fas fa-eye"></i>
                         <p>
                             View Costshare
                             <!--  -->
@@ -65,7 +65,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="paymentverification.php" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                    <i class="nav-icon fas fa-check-circle"></i>
                         <p>
                             Payment Verification
                             <!--  -->

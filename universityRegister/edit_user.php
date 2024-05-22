@@ -10,7 +10,7 @@ confirm_logged_in();
 
 ?>
 <?php
-echo $uid = intval($_GET['id']);
+$uid = intval($_GET['id']);
 
 ?>
 

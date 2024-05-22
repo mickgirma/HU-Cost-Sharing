@@ -20,13 +20,13 @@ if (isset($_GET['status'])) {
   echo $id = $_GET['id'];
   mysqli_query($conn, "UPDATE `costshareform` SET `status`= 'active' WHERE  `id`= '$id'");
   $_SESSION['delmsg'] = "User Suspend !!";
-  header("location:manage_costshare.php");
+  header("location:enableDisableCostShare.php");
 }
 if (isset($_GET['status']) && $_GET['status'] == 'disable') {
   echo $id = $_GET['id'];
   mysqli_query($conn, "UPDATE `costshareform` SET `status`= 'disable' WHERE  `id`= '$id'");
   $_SESSION['delmsg'] = "User Suspend !!";
-  header("location:manage_costshare.php");
+  header("location:enableDisableCostShare.php");
 }
 ?>
 
@@ -47,8 +47,7 @@ if (isset($_GET['status']) && $_GET['status'] == 'disable') {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Estimated cost in the current
-                                academic year</h1>
+                            <h1 class="m-0 text-dark">Estimated Cost In The Current Academic Year</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -81,7 +80,7 @@ if (isset($_GET['status']) && $_GET['status'] == 'disable') {
                                         <th>year</th>
                                         <th>Status</th>
                                         <th>action</th>
-                                        <th></th>
+                                       
 
 
                                     </tr>
@@ -104,6 +103,7 @@ if (isset($_GET['status']) && $_GET['status'] == 'disable') {
                     $num++;
                     if ($status == 'active') {
                       $btnColor = 'btn btn-primary btn-xs btn-disable';
+                      
                     } else {
                       $btnColor = 'btn btn-danger btn-xs btn-disable';
                     }
@@ -117,14 +117,14 @@ if (isset($_GET['status']) && $_GET['status'] == 'disable') {
                                         <td><?php echo htmlspecialchars($beddingExpenseFee); ?></td>
                                         <td><?php echo htmlspecialchars($total); ?></td>
                                         <td><?php echo htmlspecialchars($year); ?></td>
-                                        <td><?php echo htmlspecialchars($action); ?></td>
+                                        
                                         <td><button class="<?php echo htmlentities($btnColor) ?>">
                                                 <?php echo htmlentities($status) ?></button></td>
 
-                                        <td> <a href="manage_costshare.php?id=<?php echo $id ?>&status=active"
+                                        <td> <a href="enableDisableCostShare.php?id=<?php echo $id ?>&status=active"
                                                 onClick="return confirm('Are you sure you want to Active this Cost Share?')"><i
                                                     class="far fa-check-circle"></i></a>
-                                            <a href="manage_costshare.php?id=<?php echo $id ?>&status=disable"
+                                            <a href="enableDisableCostShare.php?id=<?php echo $id ?>&status=disable"
                                                 onClick="return confirm('Are you sure you want to disable this Cost Share?')"><i
                                                     class="fa fa-trash"></i></a>
                                         </td>
@@ -151,7 +151,7 @@ if (isset($_GET['status']) && $_GET['status'] == 'disable') {
                                         <th>year</th>
                                         <th>Status</th>
                                         <th>action</th>
-                                        <th></th>
+                                        
 
 
 
