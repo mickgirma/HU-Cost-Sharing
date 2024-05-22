@@ -18,7 +18,7 @@ if (isset($_GET['status'])) {
   echo $id = $_GET['id'];
   mysqli_query($conn, "UPDATE `costshareform` SET `status`= 'active' WHERE  `id`= '$id'");
   $_SESSION['delmsg'] = "User Suspend !!";
-  header("location:manage_costshare.php");
+  header("location:manage_cost_share.php");
 }
 ?>
 <body class="hold-transition sidebar-mini">

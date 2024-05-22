@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link">
     <img src="../images/Hawassa logo.jpg" alt="HAWASSA Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">University Registrar </span>
+        <span class="brand-text font-weight-light">HU Registrar </span>
     </a>
 
     <!-- Sidebar -->
@@ -10,11 +10,12 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="../images/<?php echo  $_SESSION['userPhoto']; ?>" class="img-circle elevation-2"
+                <img src="../images/avatar4.png" class="img-circle elevation-2"
                     alt="User Image">
             </div>
+            
             <div class="info">
-                <a href="index.php" class="d-block">University Registrar <?php echo $_SESSION['userName'] ?></a>
+                <a href="index.php" class="d-block"> <?php echo $_SESSION['userName'] ?></a>
             </div>
         </div>
 
