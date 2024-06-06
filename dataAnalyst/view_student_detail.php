@@ -149,7 +149,7 @@
                                                     <h4>
 
                                                     <small style='font-size:0.8rem ;' class="float-right"><span class="time">
-                <i class="fas fa-clock"></i> <?php echo timePosted($date); ?>
+                <i class="fas fa-clock"></i> 1 month ago
             </span></small>
                                                     </h4>
                                                 </div>

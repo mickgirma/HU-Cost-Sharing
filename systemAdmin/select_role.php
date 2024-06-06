@@ -24,7 +24,7 @@ while ($data = mysqli_fetch_assoc($sql)) {
 </select>
 </div>
 ';
-  } else if ($user_role == 'College_Register') {
+  } else if ($user_role == 'Data_Analyst') {
     $college = mysqli_query($conn, "SELECT * FROM `subcategory` ORDER BY `id` ASC");
     if ($count < 1) {
       $count = 5;

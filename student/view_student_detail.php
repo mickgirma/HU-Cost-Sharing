@@ -296,8 +296,7 @@ alert('You Are Graduate');
                             $foodCostk = 0;
                             $beddingCostk = 0;
                             $bothCostk = 0;
-                            echo $row['servicesInKind'];
-                            echo  $row['servicesInCash'];
+                            
                             $stat = true;
                             $subMenu = mysqli_query($conn, "SELECT studentcostfill.id, 
                                     `user_id`,`beddingExpenseFee`,`foodExpenseFee`,  

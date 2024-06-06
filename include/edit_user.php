@@ -162,7 +162,7 @@ if (isset($_POST['update'])) {
                                             <select name="role" id="role" class="custom-select">
                                                 <option value="<?php echo htmlspecialchars($role) ?>">
                                                     <?php echo htmlspecialchars($role) ?></option>
-                                                <option value="College_Register">Data Analyst </option>
+                                                <option value="Data_Analyst">Data Analyst </option>
                                                 <option value="Inland_Revenue">Inland Revenue </option>
                                                 <option value="Student">Student </option>
 

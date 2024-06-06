@@ -101,17 +101,17 @@ CREATE TABLE `notice` (
 
 INSERT INTO `notice` (`id`, `user_id`, `send_to`, `title`, `message`, `date`) VALUES
 (14, 14, 'stud ToCollege', ' fashion designer', 'hello', '2023-06-30 00:01:45'),
-(16, 16, 'College_Register', 'i am University ', 'sdf', '2023-06-30 00:10:00'),
+(16, 16, 'Data_Analyst', 'i am University ', 'sdf', '2023-06-30 00:10:00'),
 (18, 13, 'sendToUniversity', 'Hey University', 'For University', '2023-06-30 00:57:43'),
-(21, 16, 'College_Register', 'java and php 2020 new download now 100% working', 'java and php 2020 new download now 100% working', '2023-07-04 06:16:24'),
+(21, 16, 'Data_Analyst', 'java and php 2020 new download now 100% working', 'java and php 2020 new download now 100% working', '2023-07-04 06:16:24'),
 (23, 14, 'stud ToCollege', 'make website', 'make websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake websitemake website', '2023-07-04 06:22:44'),
 (24, 13, 'send ToUniversity', 'java', 'demo', '2023-07-04 06:38:19'),
 (25, 19, 'stud ToCollege', 'Costshare', 'eskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnmeskawn cost share alderesegnm', '2023-07-07 04:22:25'),
 (27, 13, 'send ToUniversity', 'To University Register', 'hello University Register', '2021-07-07 05:10:45'),
-(28, 16, 'College_Register', 'To College Register', 'Hey Register', '2023-07-07 05:15:36'),
+(28, 16, 'Data_Analyst', 'To College Register', 'Hey Register', '2023-07-07 05:15:36'),
 (30, 12, 'send ToUniversity', 'Mai Header', 'demo', '2023-08-16 06:55:08'),
 (32, 59, 'send Tostudent', 'from admin', 'you are fill form', '2023-08-17 02:48:59'),
-(33, 16, 'College_Register', 'hey college', 'demo', '2023-08-19 02:35:56');
+(33, 16, 'Data_Analyst', 'hey college', 'demo', '2023-08-19 02:35:56');
 
 -- --------------------------------------------------------
 
@@ -366,7 +366,7 @@ CREATE TABLE `user` (
   `Gender` varchar(50) NOT NULL,
   `password` varchar(30) NOT NULL,
   `userPhoto` varchar(150) NOT NULL,
-  `role` varchar(30) NOT NULL DEFAULT 'College_Register',
+  `role` varchar(30) NOT NULL DEFAULT 'Data_Analyst',
   `studentID` varchar(50) DEFAULT NULL,
   `FreshStudent` varchar(11) DEFAULT NULL,
   `college` varchar(255) DEFAULT NULL,
@@ -380,7 +380,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) VALUES
 (12, 'Ashu Gamechu', 'ashu', '0912783387', 'Male', 'ashu', 'offer11.jpg', 'Inland_Revenue', NULL, NULL, NULL, 'active', '2023-06-23'),
-(13, 'Zemenu Taye ', 'zeme', '0919956874', 'Male', 'zeme', 'avatar4.png', 'College_Register', NULL, NULL, NULL, 'active', '2023-06-23'),
+(13, 'Zemenu Taye ', 'zeme', '0919956874', 'Male', 'zeme', 'avatar4.png', 'Data_Analyst', NULL, NULL, NULL, 'active', '2023-06-23'),
 (16, 'admin', 'admin', '', 'Male', 'admin', 'avatar4.png', 'admin', NULL, NULL, NULL, 'active', '2023-06-24'),
 (47, 'Munewer Aliyi', 'muni', '092457896', 'Male', 'muni', 'screencapture-ecyo-event-netlify-app-2023-01-29-13_02_41.png', 'Student', '', NULL, 'College of school of low', 'suspend', '2023-08-03'),
 (59, 'Munir Mifta', 'man', '0911309125', 'Male', 'man', '../images/109274439man.jpg', 'Fresh_Man', '', '', '', 'active', '2023-08-10'),
@@ -388,18 +388,18 @@ INSERT INTO `user` (`id`, `fullName`, `userName`, `phoneNumber`, `Gender`, `pass
 (63, 'Ashanafi Fareja', 'stud2', '0911309125', 'Male', 'stud2', '../images/585745462stud2.png', 'Student', 'RCD/12/200', 'Yes', '', 'active', '2023-08-10'),
 (64, 'Abdulwahab Heiyreden', 'stud4', '0911309125', 'Male', 'stud4', '../images/35456287stud4.png', 'Student', 'RCD/1002/200', 'No', '', 'active', '2023-08-11'),
 (65, 'Kenesa Ejera', 'stud5', '0911309125', 'Male', 'stud5', '../images/26209399stud5.jpg', 'Student', 'RCD/1002/200', 'No', '', 'active', '2023-08-11'),
-(66, 'Sella Dawit', 'eng', '0966527596', 'Female', 'eng', '../images/1688562941eng.png', 'College_Register', '', '', 'College of Engineering', 'active', '2023-08-11'),
-(67, 'Semira Mulugeta', 'health', '0911309125', 'Female', 'health', '../images/467390099health.png', 'College_Register', '', '', 'College of health science', 'active', '2023-08-12'),
+(66, 'Sella Dawit', 'eng', '0966527596', 'Female', 'eng', '../images/1688562941eng.png', 'Data_Analyst', '', '', 'College of Engineering', 'active', '2023-08-11'),
+(67, 'Semira Mulugeta', 'health', '0911309125', 'Female', 'health', '../images/467390099health.png', 'Data_Analyst', '', '', 'College of health science', 'active', '2023-08-12'),
 (68, 'Mulate Molla', 'stud6', '0911309125', 'Male', 'stud6', '../images/1485743884stud6.jpg', 'Student', 'RCD/12/200', 'No', '', 'active', '2023-08-12'),
 (69, 'Mintesnot Zowdu', 'stud8', '0911309125', 'Male', 'stud8', '../images/718143595stud8.jpg', 'Student', 'RCD/12/20045', 'No', '', 'active', '2023-08-12'),
-(70, 'Andualem Waleleny', 'eco', '0966527596', 'Male', 'eco', '../images/1790979609eco.png', 'College_Register', '', '', 'College of business and economics', 'active', '2023-08-12'),
+(70, 'Andualem Waleleny', 'eco', '0966527596', 'Male', 'eco', '../images/1790979609eco.png', 'Data_Analyst', '', '', 'College of business and economics', 'active', '2023-08-12'),
 (71, 'Misale felema', 'elsa', '0911309125', 'Male', 'elsa', '../images/1059276050elsa.jpg', 'Student', 'RCD/12/20088', 'No', '', 'active', '2023-08-15'),
 (72, 'Yilqal kestela', 'addis', '0925417896', 'Male', 'addis', '../images/1612111516addis.png', 'Student', 'rcd/345/34', 'No', '', 'active', '2023-08-16'),
 (73, 'Yoseph Ergana', 'danit', '0966527596', 'Male', 'natidanit', '../images/785198481danit.', 'Student', '12/2020/rcdss', 'No', '', 'active', '2023-08-16'),
 (87, 'Mokenent Worku', 'new12', '0966527596', 'Male', 'new12', '../images/1616122396new12.png', 'Student', '12/2020/rcd/4', 'No', '', 'active', '2023-08-19'),
-(88, 'Muaz Nureden', 'fresh12', '0911309125', 'Male', 'fresh12', '../images/1083450852fresh12.png', 'College_Register', '', '', 'Fresh Man', 'active', '2023-08-19'),
-(89, 'Temralech berhanu', 'stud12', '0911309125', 'Female', 'stud12', '../images/49410576stud12.png', 'College_Register', '', '', 'College of Engineering', 'active', '2023-08-19'),
-(90, 'Teshome kebru', 'ashenafi', '0911309125', 'Male', 'ashenafi', '../images/707140169ashenafi.png', 'College_Register', '', '', 'Fresh Man', 'active', '2023-08-22'),
+(88, 'Muaz Nureden', 'fresh12', '0911309125', 'Male', 'fresh12', '../images/1083450852fresh12.png', 'Data_Analyst', '', '', 'Fresh Man', 'active', '2023-08-19'),
+(89, 'Temralech berhanu', 'stud12', '0911309125', 'Female', 'stud12', '../images/49410576stud12.png', 'Data_Analyst', '', '', 'College of Engineering', 'active', '2023-08-19'),
+(90, 'Teshome kebru', 'ashenafi', '0911309125', 'Male', 'ashenafi', '../images/707140169ashenafi.png', 'Data_Analyst', '', '', 'Fresh Man', 'active', '2023-08-22'),
 (91, 'Eskiyas Tewelde ', 'eskiyas', '0911309125', 'Male', 'eskiyas', '../images/798240454eskiyas.jpg', 'Student', 'RCD/12/200234', 'No', '', 'active', '2023-08-22');
 
 --

@@ -52,7 +52,7 @@ CREATE TABLE `user` (
   `Gender` varchar(50) NOT NULL,
   `password` varchar(30) NOT NULL,
   `userPhoto` varchar(150) NOT NULL,
-  `role` varchar(30) NOT NULL DEFAULT 'College_Register',
+  `role` varchar(30) NOT NULL DEFAULT 'Data_Analyst',
   `studentID` varchar(50) DEFAULT NULL,
   `FreshStudent` varchar(11) DEFAULT NULL,
   `college` varchar(255) DEFAULT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE `user` (
   `Gender` varchar(50) NOT NULL,
   `password` varchar(30) NOT NULL,
   `userPhoto` varchar(150) NOT NULL,
-  `role` varchar(30) NOT NULL DEFAULT 'College_Register',
+  `role` varchar(30) NOT NULL DEFAULT 'Data_Analyst',
   `studentID` varchar(50) DEFAULT NULL,
   `FreshStudent` varchar(11) DEFAULT NULL,
   `college` varchar(255) DEFAULT NULL,
@@ -177,7 +177,7 @@ CREATE TABLE `user` (
   `Gender` varchar(50) NOT NULL,
   `password` varchar(30) NOT NULL,
   `userPhoto` varchar(150) NOT NULL,
-  `role` varchar(30) NOT NULL DEFAULT 'College_Register',
+  `role` varchar(30) NOT NULL DEFAULT 'Data_Analyst',
   `studentID` varchar(50) DEFAULT NULL,
   `FreshStudent` varchar(11) DEFAULT NULL,
   `college` varchar(255) DEFAULT NULL,
@@ -296,7 +296,7 @@ VALUES ('Milkesa Tesfaye', 'stud5', '0977012655', 'Male', 'stud5', 'avatar4.png'
 
 
 INSERT INTO `user` (`fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) 
-VALUES ('Yared Birhanu', 'ashu', '0977112655', 'Male', 'ashu', 'avatar4.png', 'College_Register', NULL, NULL, NULL, 'active', '2024-04-23');
+VALUES ('Yared Birhanu', 'ashu', '0977112655', 'Male', 'ashu', 'avatar4.png', 'Data_Analyst', NULL, NULL, NULL, 'active', '2024-04-23');
 
 
 INSERT INTO `user` (`fullName`, `userName`, `phoneNumber`, `Gender`, `password`, `userPhoto`, `role`, `studentID`, `FreshStudent`, `college`, `status`, `date`) 
@@ -347,7 +347,7 @@ if (isset($_POST['login'])) {
       if ($college == "Fresh Man") {
         header("location:../FreshManRegister/index.php");
       }
-      if ($role == "College_Register" && $college !== 'Fresh Man') {
+      if ($role == "Data_Analyst" && $college !== 'Fresh Man') {
         // $_SESSION['college']  = $row['college'];
         header("location:../dataAnalyst/index.php");
       } else if ($role == "Inland_Revenue") {

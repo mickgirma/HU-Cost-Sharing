@@ -488,7 +488,7 @@
                                                                             id="schoolRegion" class="form-control is-valid"
                                                                             pattern=".([A-zÀ-ž0-9\s]){2,20}"
                                                                             title="2 to 15 characters"
-                                                                            value="<?php echo $schoolRegion ?>"
+                                                                            value=""
                                                                             <?php echo $disabled ?> required>
                                                                     </div>
 

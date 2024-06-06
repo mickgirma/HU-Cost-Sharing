@@ -4,10 +4,7 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="en">
-<?php include '../include/header.php'
-?>
-
-
+<?php include '../include/header.php' ?>
 <?php include '../db/database.php' ?>
 <?php include '../include/session.php' ?>
 <?php
@@ -17,16 +14,16 @@ confirm_logged_in();
 ?>
 <?php
 if (isset($_GET['suspend'])) {
-  echo $id = $_GET['id'];
-  mysqli_query($conn, "UPDATE `user` SET `status`= 'suspend' WHERE  `id`= '$id'");
-  $_SESSION['delmsg'] = "User Suspend !!";
-  header("location:manage_account.php");
+    echo $id = $_GET['id'];
+    mysqli_query($conn, "UPDATE `user` SET `status`= 'suspend' WHERE  `id`= '$id'");
+    $_SESSION['delmsg'] = "User Suspended !!";
+    header("location:manage_account.php");
 }
 if (isset($_GET['status'])) {
-  echo $id = $_GET['id'];
-  mysqli_query($conn, "UPDATE `user` SET `status`= 'active' WHERE  `id`= '$id'");
-  $_SESSION['delmsg'] = "User Active !!";
-  header("location:manage_account.php");
+    echo $id = $_GET['id'];
+    mysqli_query($conn, "UPDATE `user` SET `status`= 'active' WHERE  `id`= '$id'");
+    $_SESSION['delmsg'] = "User Activated !!";
+    header("location:manage_account.php");
 }
 
 ?>
@@ -76,12 +73,11 @@ if (isset($_GET['status'])) {
                                             <th>ID</th>
                                             <th>Username</th>
                                             <th>Name</th>
-
+                                            <th>Email</th>
                                             <th>Role</th>
                                             <th>Phone Number</th>
-                                            <th>status</th>
+                                            <th>Status</th>
                                             <th>Action</th>
-                                            <!-- <th>status</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -95,6 +91,7 @@ if (isset($_GET['status'])) {
                       $userPhoto = $row['userPhoto'];
                       $role = $row['role'];
                       $status = $row['status'];
+                      $email = $row['email']; // Fetch email from database
                       $btnColor = "";
 
                       if ($status == 'active') {
@@ -115,8 +112,9 @@ if (isset($_GET['status'])) {
                                                     alt="ALT img" class="img-circle img-size-32 mr-2">
                                                 <?php echo htmlentities($fullName) ?>
                                             </td>
-                                            <td> <?php echo htmlentities($role) ?></td>
-                                            <td> <?php echo htmlentities($phoneNumber) ?></td>
+                                            <td><?php echo htmlentities($email) ?></td> <!-- Display email -->
+                                            <td><?php echo htmlentities($role) ?></td>
+                                            <td><?php echo htmlentities($phoneNumber) ?></td>
                                             <td>
                                                 <button class="<?php echo htmlentities($btnColor) ?>">
                                                     <?php echo htmlentities($status) ?></button>
@@ -129,12 +127,9 @@ if (isset($_GET['status'])) {
                                                     "return confirm('Are you sure you want to suspend?')"><i
                                                         class="far fa-trash-alt"></i></a>
                                                 <a href="manage_account.php?id=<?php echo $id ?>&status=active"
-                                                    onClick="return confirm('Are you sure you want to Active this user?')"><i
+                                                    onClick="return confirm('Are you sure you want to activate this user?')"><i
                                                         class="far fa-check-circle"></i></a>
                                             </td>
-                                            <!-- <td> <a class="btn btn-success btn-sm" href="view_student_detail.php"><i
-                                                        class="fas fa-user-circle mr-2"></i>View</a>
-                                            </td> -->
                                         </tr>
 
                                         <?php   }
@@ -146,12 +141,11 @@ if (isset($_GET['status'])) {
                                             <th>ID</th>
                                             <th>Username</th>
                                             <th>Name</th>
-
+                                            <th>Email</th>
                                             <th>Role</th>
                                             <th>Phone Number</th>
-                                            <th>status</th>
+                                            <th>Status</th>
                                             <th>Action</th>
-                                            <!-- <th>status</th> -->
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -161,21 +155,11 @@ if (isset($_GET['status'])) {
 
                     </div>
                     <!-- /.row -->
-                </div><!-- /.container-fluid manage -->
+                </div><!-- /.container-fluid -->
             </div>
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-
-        <!-- Control Sidebar -->
-        <!-- Control sidebar content goes here -->
-        <!-- <aside class="control-sidebar control-sidebar-dark">
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Sidebar content</p>
-            </div>
-        </aside> -->
-        <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
         <?php include 'include/footer.php' ?>
@@ -183,7 +167,6 @@ if (isset($_GET['status'])) {
     <!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->
-
 
     <?php include '../include/script.php' ?>
 </body>
