@@ -62,6 +62,18 @@
           </a>
 
         </li>
+
+        <li class="nav-item">
+          <a href="send_application.php" class="nav-link">
+            <i class="nav-icon fas fa-paper-plane"></i>
+            <p>
+              Send Application
+
+            </p>
+          </a>
+
+        </li>
+
         <li class="nav-item">
           <a href="sendfeedback.php" class="nav-link">
             <i class="nav-icon far fa-comment"></i>
@@ -72,16 +84,7 @@
           </a>
 
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-paper-plane"></i>
-            <p>
-              Send Application
-
-            </p>
-          </a>
-
-        </li>
+        
        
         <li class="nav-item">
           <a href="../login/logout.php" class="nav-link">

@@ -20,6 +20,14 @@ if (isset($_POST['verify_payment'])) {
     $stmt->close();
 }
 
+// Handle the filter
+$filter = isset($_POST['filter']) ? $_POST['filter'] : 'all';
+$whereClause = '';
+if ($filter == 'verified') {
+    $whereClause = 'WHERE payment_verified = 1';
+} elseif ($filter == 'not_verified') {
+    $whereClause = 'WHERE payment_verified = 0';
+}
 ?>
 
 <body class="hold-transition sidebar-mini">
@@ -56,104 +64,98 @@ if (isset($_POST['verify_payment'])) {
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-
                         <div class="col-md-12">
-
-                            <div class="card-body">
-                                <table id="example3" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Student ID</th>
-                                            <th>Student Full Name</th>
-                                            <th>Category Name</th>
-                                            <th>Department Year</th>
-                                            <th>Services In Kind</th>
-                                            <th>Services In Cash</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $sql = mysqli_query($conn, "SELECT studentcostfill.id, subcategory.subcategoryName AS catName, `user_id`, user.userPhoto as userPhoto, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`, `graduated`,`send_graduate`, user.studentId as studentId , user.fullName as studFullName  FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName  INNER JOIN `user` ON user.id = studentcostfill.user_id");
-                                        while ($row = mysqli_fetch_assoc($sql)) {
-                                            $cost_id = $row['id'];
-                                            $userPhoto = $row['userPhoto'];
-                                            $catName = $row['catName'];
-                                            $departmentYear = $row['departmentYear'];
-                                            $servicesInKind = $row['servicesInKind'];
-                                            $servicesInCash = $row['servicesInCash'];
-                                            $studentId = $row['studentId'];
-                                            $studFullName = $row['studFullName'];
-                                        ?>
-
+                            <div class="card">
+                                <div class="card-header">
+                                    <form method="post" id="filterForm" class="form-inline">
+                                        <label for="filter" class="mr-2">Filter:</label>
+                                        <select name="filter" id="filter" class="form-control mr-2" onchange="document.getElementById('filterForm').submit();">
+                                            <option value="all" <?php if ($filter == 'all') echo 'selected'; ?>>All</option>
+                                            <option value="verified" <?php if ($filter == 'verified') echo 'selected'; ?>>Verified</option>
+                                            <option value="not_verified" <?php if ($filter == 'not_verified') echo 'selected'; ?>>Not Verified</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <div class="card-body">
+                                    <table id="example3" class="table table-bordered table-striped">
+                                        <thead>
                                             <tr>
-                                                <td><?php echo htmlentities($studentId); ?></td>
-                                                <td>
-                                                    <img src="../images/<?php echo htmlentities($userPhoto); ?>" alt="Profile Photo" class="img-circle img-size-64 mr-2">
-                                                    <?php echo htmlentities($studFullName); ?>
-                                                </td>
-                                                <td><?php echo htmlentities($catName); ?></td>
-                                                <td><?php echo htmlentities($departmentYear); ?></td>
-                                                <td><?php echo htmlspecialchars($servicesInKind); ?></td>
-                                                <td><?php echo htmlspecialchars($servicesInCash); ?></td>
-                                                <td>
-                                                    <form method="post">
-                                                        <input type="hidden" name="cost_id" value="<?php echo $cost_id; ?>">
-                                                        <button type="submit" name="verify_payment" class="btn btn-success">Verify Payment</button>
-                                                    </form>
-                                                </td>
+                                                <th>Student ID</th>
+                                                <th>Student Full Name</th>
+                                                <th>Category Name</th>
+                                                <th>Department Year</th>
+                                                <th>Services In Kind</th>
+                                                <th>Services In Cash</th>
+                                                <th>Action</th>
                                             </tr>
-
-                                        <?php
-                                        }
-                                        ?>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Student ID</th>
-                                            <th>Student Full Name</th>
-
-                                            <th>Category Name</th>
-                                            <th>Department Year</th>
-                                            <th>Services In Kind</th>
-                                            <th>Services In Cash</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sql = mysqli_query($conn, "SELECT studentcostfill.id, subcategory.subcategoryName AS catName, `user_id`, user.userPhoto as userPhoto, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`, `graduated`,`send_graduate`, `payment_verified`, user.studentId as studentId , user.fullName as studFullName FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName INNER JOIN `user` ON user.id = studentcostfill.user_id $whereClause");
+                                            while ($row = mysqli_fetch_assoc($sql)) {
+                                                $cost_id = $row['id'];
+                                                $userPhoto = $row['userPhoto'];
+                                                $catName = $row['catName'];
+                                                $departmentYear = $row['departmentYear'];
+                                                $servicesInKind = $row['servicesInKind'];
+                                                $servicesInCash = $row['servicesInCash'];
+                                                $studentId = $row['studentId'];
+                                                $studFullName = $row['studFullName'];
+                                                $payment_verified = $row['payment_verified'];
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo htmlentities($studentId); ?></td>
+                                                    <td>
+                                                        <img src="../images/<?php echo htmlentities($userPhoto); ?>" alt="Profile Photo" class="img-circle img-size-64 mr-2">
+                                                        <?php echo htmlentities($studFullName); ?>
+                                                    </td>
+                                                    <td><?php echo htmlentities($catName); ?></td>
+                                                    <td><?php echo htmlentities($departmentYear); ?></td>
+                                                    <td><?php echo htmlspecialchars($servicesInKind); ?></td>
+                                                    <td><?php echo htmlspecialchars($servicesInCash); ?></td>
+                                                    <td>
+                                                        <form method="post">
+                                                            <input type="hidden" name="cost_id" value="<?php echo $cost_id; ?>">
+                                                            <?php if ($payment_verified): ?>
+                                                                <button type="button" class="btn btn-secondary" disabled>Verified</button>
+                                                            <?php else: ?>
+                                                                <button type="submit" name="verify_payment" class="btn btn-success">Verify Payment</button>
+                                                            <?php endif; ?>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Student ID</th>
+                                                <th>Student Full Name</th>
+                                                <th>Category Name</th>
+                                                <th>Department Year</th>
+                                                <th>Services In Kind</th>
+                                                <th>Services In Cash</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
 
-    <!-- Control Sidebar -->
-    <!-- Control sidebar content goes here -->
-    <!-- <aside class="control-sidebar control-sidebar-dark">
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Sidebar content</p>
-            </div>
-        </aside> -->
-    <!-- /.control-sidebar -->
-
-    <!-- Main Footer -->
-    <?php include 'include/footer.php' ?>
+        <!-- Main Footer -->
+        <?php include 'include/footer.php' ?>
     </div>
     <!-- ./wrapper -->
 
-    <!- - REQUIRED SCRIPTS -->
-        <?php include '../include/script.php' ?>
+    <!-- REQUIRED SCRIPTS -->
+    <?php include '../include/script.php' ?>
 </body>
-
 </html>

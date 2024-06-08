@@ -36,7 +36,7 @@
                             
                         </p>
                     </a>
-                </li>
+                </li> 
                 <li class="nav-item">
                     <a href="viewStudentInformation.php" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
@@ -52,6 +52,16 @@
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>
                             Manage Notice
+                            <!--  -->
+                        </p>
+                    </a>
+
+                </li>
+                <li class="nav-item">
+                    <a href="manage_cost_share.php" class="nav-link">
+                        <i class="nav-icon fas fa-envelope"></i>
+                        <p>
+                            Update Costshare
                             <!--  -->
                         </p>
                     </a>

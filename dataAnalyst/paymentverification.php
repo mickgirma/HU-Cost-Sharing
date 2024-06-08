@@ -9,11 +9,25 @@ confirm_logged_in();
 
 // Function to book a queue
 if (isset($_POST['book_queue'])) {
-    // Here you would implement the logic to book a queue for the selected student
-    // For demonstration purposes, let's assume it's just an alert
-    echo "<script>alert('Queue booked successfully');</script>";
+    $cost_id = intval($_POST['cost_id']);
+    $stmt = $conn->prepare("UPDATE studentcostfill SET booked_queue = 1 WHERE id = ?");
+    $stmt->bind_param("i", $cost_id);
+    if ($stmt->execute()) {
+        echo "<script>alert('Queue booked successfully');</script>";
+    } else {
+        echo "<script>alert('Queue booking failed');</script>";
+    }
+    $stmt->close();
 }
 
+// Handle the filter
+$filter = isset($_POST['filter']) ? $_POST['filter'] : 'all';
+$whereClause = 'WHERE studentcostfill.payment_verified = 1';
+if ($filter == 'booked') {
+    $whereClause .= ' AND booked_queue = 1';
+} elseif ($filter == 'not_booked') {
+    $whereClause .= ' AND booked_queue = 0';
+}
 ?>
 
 <body class="hold-transition sidebar-mini">
@@ -50,96 +64,105 @@ if (isset($_POST['book_queue'])) {
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-
                         <div class="col-md-12">
-
-                            <div class="card-body">
-                                <table id="example3" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Student ID</th>
-                                            <th>Student Full Name</th>
-                                            <th>Category Name</th>
-                                            <th>Department Year</th>
-                                            <th>Services In Kind</th>
-                                            <th>Services In Cash</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $sql = mysqli_query($conn, "SELECT studentcostfill.id, subcategory.subcategoryName AS catName, `user_id`, user.userPhoto as userPhoto, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`, `graduated`,`send_graduate`, user.studentId as studentId , user.fullName as studFullName, `booked_queue` FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName  INNER JOIN `user` ON user.id = studentcostfill.user_id WHERE studentcostfill.payment_verified = 1");
-
-                                        while ($row = mysqli_fetch_assoc($sql)) {
-                                            $cost_id = $row['id'];
-                                            $userPhoto = $row['userPhoto'];
-                                            $catName = $row['catName'];
-                                            $departmentYear = $row['departmentYear'];
-                                            $servicesInKind = $row['servicesInKind'];
-                                            $servicesInCash = $row['servicesInCash'];
-                                            $studentId = $row['studentId'];
-                                            $studFullName = $row['studFullName'];
-                                            // Check if 'booked_queue' key exists in the row
-                                            $bookedQueue = isset($row['booked_queue']) ? $row['booked_queue'] : ''; // Default value if key is not set
-                                            // Define button class based on whether queue is booked or not
-                                            $buttonClass = $bookedQueue ? 'btn btn-secondary' : 'btn btn-primary';
-                                            // Define button text based on whether queue is booked or not
-                                            $buttonText = $bookedQueue ? 'Queue Booked' : 'Book Queue';
-                                        ?>
-
+                            <div class="card">
+                                <div class="card-header">
+                                    <form method="post" id="filterForm" class="form-inline">
+                                        <label for="filter" class="mr-2">Filter:</label>
+                                        <select name="filter" id="filter" class="form-control mr-2" onchange="document.getElementById('filterForm').submit();">
+                                            <option value="all" <?php if ($filter == 'all') echo 'selected'; ?>>All</option>
+                                            <option value="booked" <?php if ($filter == 'booked') echo 'selected'; ?>>Queue Booked</option>
+                                            <option value="not_booked" <?php if ($filter == 'not_booked') echo 'selected'; ?>>Queue Not Booked</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <div class="card-body">
+                                    <table id="example3" class="table table-bordered table-striped">
+                                        <thead>
                                             <tr>
-                                                <td><?php echo htmlentities($studentId); ?></td>
-                                                <td>
-                                                    <img src="../images/<?php echo htmlentities($userPhoto); ?>" alt="Profile Photo" class="img-circle img-size-64 mr-2">
-                                                    <?php echo htmlentities($studFullName); ?>
-                                                </td>
-                                                <td><?php echo htmlentities($catName); ?></td>
-                                                <td><?php echo htmlentities($departmentYear); ?></td>
-                                                <td><?php echo htmlspecialchars($servicesInKind); ?></td>
-                                                <td><?php echo htmlspecialchars($servicesInCash); ?></td>
-                                                <td>
-                                                    <form method="post">
-                                                        <input type="hidden" name="cost_id" value="<?php echo $cost_id; ?>">
-                                                        <button type="submit" name="book_queue" class="<?php echo $buttonClass; ?>"><?php echo $buttonText; ?></button>
-                                                    </form>
-                                                </td>
+                                                <th>Student ID</th>
+                                                <th>Student Full Name</th>
+                                                <th>Category Name</th>
+                                                <th>Department Year</th>
+                                                <th>Services In Kind</th>
+                                                <th>Services In Cash</th>
+                                                <th>Action</th>
+                                                <!-- New column for the "View" button -->
+                                                <th>View</th>
                                             </tr>
-
-                                        <?php
-                                        }
-                                        ?>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Student ID</th>
-                                            <th>Student Full Name</th>
-
-                                            <th>Category Name</th>
-                                            <th>Department Year</th>
-                                            <th>Services In Kind</th>
-                                            <th>Services In Cash</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+$sql = mysqli_query($conn, "SELECT studentcostfill.id, user.id AS user_id, subcategory.subcategoryName AS catName, `user_id`, user.userPhoto as userPhoto, `parentFullName`, `parentRegion`, `parentZone`, `parentWoreda`, `parentCity`, `parentHouseNumber`, `parentPostalBox`, `schoolName`, `schoolRegion`, `schoolKebele`, `schoolWoreda`, `schoolCity`, `schoolCompletedDate`, `departmentType`, `departmentName`, `departmentYear`, `collegeStartDate`, `studentStatus`, `servicesInKind`, `servicesInCash`, `withDrawDate`, `graduated`,`send_graduate`, user.studentId as studentId , user.fullName as studFullName, `booked_queue` FROM `studentcostfill` INNER JOIN subcategory ON subcategory.id = studentcostfill.departmentName  INNER JOIN `user` ON user.id = studentcostfill.user_id $whereClause");
+                                            while ($row = mysqli_fetch_assoc($sql)) {
+                                                $cost_id = $row['id'];
+                                                $userPhoto = $row['userPhoto'];
+                                                $catName = $row['catName'];
+                                                $departmentYear = $row['departmentYear'];
+                                                $servicesInKind = $row['servicesInKind'];
+                                                $servicesInCash = $row['servicesInCash'];
+                                                $studentId = $row['studentId'];
+                                                $studFullName = $row['studFullName'];
+                                                $bookedQueue = $row['booked_queue'];
+                                                $buttonClass = $bookedQueue ? 'btn btn-secondary' : 'btn btn-primary';
+                                                $buttonText = $bookedQueue ? 'Queue Booked' : 'Book Queue';
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo htmlentities($studentId); ?></td>
+                                                    <td>
+                                                        <img src="../images/<?php echo htmlentities($userPhoto); ?>" alt="Profile Photo" class="img-circle img-size-64 mr-2">
+                                                        <?php echo htmlentities($studFullName); ?>
+                                                    </td>
+                                                    <td><?php echo htmlentities($catName); ?></td>
+                                                    <td><?php echo htmlentities($departmentYear); ?></td>
+                                                    <td><?php echo htmlspecialchars($servicesInKind); ?></td>
+                                                    <td><?php echo htmlspecialchars($servicesInCash); ?></td>
+                                                    <td>
+                                                        <form method="post">
+                                                            <input type="hidden" name="cost_id" value="<?php echo $cost_id; ?>">
+                                                            <button type="submit" name="book_queue" class="<?php echo $buttonClass; ?>" <?php echo $bookedQueue ? 'disabled' : ''; ?>><?php echo $buttonText; ?></button>
+                                                        </form>
+                                                    </td>
+                                                    <!-- "View" button column -->
+                                                    <td>
+                                                        <!-- Link to view_student.php with student ID as parameter -->
+                                                        <a href="view_student_detail.php?id=<?php echo $row['user_id']; ?>" class="btn btn-info">View</a>                                                    </td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Student ID</th>
+                                                <th>Student Full Name</th>
+                                                <th>Category Name</th>
+                                                <th>Department Year</th>
+                                                <th>Services In Kind</th>
+                                                <th>Services In Cash</th>
+                                               
+                                                <th>Action</th>
+                                                <!-- New column for the "View" button -->
+                                                <th>View</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
-
                         </div>
-
                     </div>
+                </div>
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
 
-                    </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div><!-- /.content -->
-</div><!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        <?php include 'include/footer.php' ?>
+    </div>
+    <!-- ./wrapper -->
 
-<!-- Main Footer -->
-<?php include 'include/footer.php' ?>
-</div><!-- ./wrapper -->
-
-<!- - REQUIRED SCRIPTS -->
-<?php include '../include/script.php' ?>
+    <!-- REQUIRED SCRIPTS -->
+    <?php include '../include/script.php' ?>
 </body>
-
 </html>
