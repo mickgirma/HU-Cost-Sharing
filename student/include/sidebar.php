@@ -32,6 +32,15 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="edit_user.php" class="nav-link">
+            <i class="nav-icon fas fa-edit"></i>
+            <p>
+              Edit Profile
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="view_student_detail.php" class="nav-link">
             <i class="nav-icon fas fa-info"></i>
             <p>

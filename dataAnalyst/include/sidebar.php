@@ -59,13 +59,9 @@
                 </li>
                 <li class="nav-item">
                     <a href="manage_cost_share.php" class="nav-link">
-                        <i class="nav-icon fas fa-envelope"></i>
-                        <p>
-                            Update Costshare
-                            <!--  -->
-                        </p>
+                        <i class="nav-icon fas fa-sync-alt"></i>
+                        <p>Update Costshare</p>
                     </a>
-
                 </li>
                 <li class="nav-item">
                     <a href="view_cost_share.php" class="nav-link">

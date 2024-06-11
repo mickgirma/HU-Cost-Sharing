@@ -1,36 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<?php 
-include '../include/header.php'; 
-include '../db/database.php'; 
-include '../include/session.php'; 
-include '../include/function.php'; 
+<?php
+session_start();
 
-// Debug: Check if session ID is set
+function logged_in() {
+    return isset($_SESSION['id']);
+}
+
+function confirm_logged_in() {
+    if (!logged_in()) {
+        ?>
+        <script type="text/javascript">
+            window.location = "../login/login.php";
+        </script>
+        <?php
+        exit;
+    }
+}
+
+confirm_logged_in();
+
+include '../include/header.php';
+include '../db/database.php';
+include '../include/function.php';
+
 if (!isset($_SESSION['id'])) {
     die("Session ID is not set. Please log in again.");
 } else {
     $currentUserId = $_SESSION['id'];
-    // Debug: Print current user ID
-    echo "Current User ID: " . htmlspecialchars($currentUserId) . "<br>";
+    // Removed debug output
+    // echo "Session ID: " . htmlspecialchars($_SESSION['id']) . "<br>";
+    // echo "Current User ID: " . htmlspecialchars($currentUserId) . "<br>";
 }
 
-// Debug: Check database connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-//login confirmation
-confirm_logged_in();
+$checkUserQuery = "SELECT * FROM user WHERE id = '$currentUserId'";
+$checkUserResult = mysqli_query($conn, $checkUserQuery);
 
-if (isset($_GET['status'])) {
-    $id = $_GET['id'];
-    mysqli_query($conn, "UPDATE `costshareform` SET `status`= 'active' WHERE `id`= '$id'");
-    $_SESSION['delmsg'] = "User Suspend !!";
-    header("location:manage_cost_share.php");
+if (mysqli_num_rows($checkUserResult) == 0) {
+    die("User with ID $currentUserId does not exist in the user table.");
 }
-?>
 
+$sql = "SELECT
+    costshareform.id,
+    subcategory.subcategoryName AS categoryName,
+    costshareform.tuitionFee,
+    costshareform.foodExpenseFee,
+    costshareform.beddingExpenseFee,
+    costshareform.status,
+    costshareform.action,
+    costshareform.year
+FROM
+    costshareform
+    INNER JOIN subcategory ON costshareform.collegeName = subcategory.id";
+
+$result = mysqli_query($conn, $sql);
+
+if (!$result) {
+    die("Error executing query: " . mysqli_error($conn));
+}
+
+// Removed debug output
+// echo "Number of rows returned: " . mysqli_num_rows($result) . "<br>";
+
+// Removed debug output
+// if (mysqli_num_rows($result) == 0) {
+//     echo "No data found.";
+// } else {
+//     while ($row = mysqli_fetch_assoc($result)) {
+//         echo "Fetched Row: " . print_r($row, true) . "<br>";
+//     }
+// }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Include your head content here -->
+</head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- Navbar -->
@@ -83,22 +130,11 @@ if (isset($_GET['status'])) {
                                 <tbody>
                                     <?php
                                     $num = 0;
-                                    $sql = "SELECT costshareform.id, subcategory.subcategoryName AS categoryName, tuitionFee, foodExpenseFee, beddingExpenseFee, userId, total, status, action, year 
-                                            FROM costshareform 
-                                            INNER JOIN subcategory ON collegeName = subcategory.id 
-                                            WHERE userId = '$currentUserId'";
 
-                                    $result = mysqli_query($conn, $sql);
-
-                                    // Debug: Check SQL query
-                                    if (!$result) {
-                                        die("Error executing query: " . mysqli_error($conn));
-                                    }
-
-                                    // Debug: Check if rows are returned
                                     if (mysqli_num_rows($result) == 0) {
                                         echo "<tr><td colspan='9'>No data found.</td></tr>";
                                     } else {
+                                        mysqli_data_seek($result, 0);
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             $id = $row['id'];
                                             $collegeName = $row['categoryName'];
@@ -113,19 +149,19 @@ if (isset($_GET['status'])) {
                                             $num++;
                                             $btnColor = ($status == 'active') ? 'btn btn-primary btn-xs btn-disable' : 'btn btn-danger btn-xs btn-disable';
                                             $edit = ($status == 'active') ? 'd-none' : '';
-                                        ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($num); ?></td>
-                                            <td><?php echo htmlspecialchars($collegeName); ?></td>
-                                            <td><?php echo htmlspecialchars($tuitionFee); ?></td>
-                                            <td><?php echo htmlspecialchars($foodExpenseFee); ?></td>
-                                            <td><?php echo htmlspecialchars($beddingExpenseFee); ?></td>
-                                            <td><?php echo htmlspecialchars($total); ?></td>
-                                            <td><?php echo htmlspecialchars($year); ?></td>
-                                            <td><button class="<?php echo htmlentities($btnColor); ?>"><?php echo htmlentities($status); ?></button></td>
-                                            <td><a href="edit_cost_share.php?id=<?php echo $id; ?>" class="<?php echo $edit; ?>">Edit</a></td>
-                                        </tr>
-                                        <?php
+                                    ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($num); ?></td>
+                                        <td><?php echo htmlspecialchars($collegeName); ?></td>
+                                        <td><?php echo htmlspecialchars($tuitionFee); ?></td>
+                                        <td><?php echo htmlspecialchars($foodExpenseFee); ?></td>
+                                        <td><?php echo htmlspecialchars($beddingExpenseFee); ?></td>
+                                        <td><?php echo htmlspecialchars($total); ?></td>
+                                        <td><?php echo htmlspecialchars($year); ?></td>
+                                        <td><button class="<?php echo htmlentities($btnColor); ?>"><?php echo htmlentities($status); ?></button></td>
+                                        <td><a href="edit_cost_share.php?id=<?php echo $id; ?>" class="<?php echo $edit; ?>">Edit</a></td>
+                                    </tr>
+                                    <?php
                                         }
                                     }
                                     ?>
@@ -157,9 +193,5 @@ if (isset($_GET['status'])) {
         <!-- Main Footer -->
         <?php include 'include/footer.php'; ?>
     </div>
-    <!-- ./wrapper -->
-
-    <!-- REQUIRED SCRIPTS -->
-    <?php include '../include/script.php'; ?>
 </body>
 </html>
